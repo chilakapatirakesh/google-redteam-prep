@@ -1,0 +1,1976 @@
+cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Mandiant Red Team – OmniIntelligence Preparation Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0e;
+  --bg2: #0f1215;
+  --bg3: #141820;
+  --bg4: #1a2030;
+  --border: #1e2a3a;
+  --border2: #243040;
+  --green: #00c896;
+  --green2: #00ff9d;
+  --blue: #4a9eff;
+  --blue2: #7bb8ff;
+  --red: #ff4a6e;
+  --amber: #ffb347;
+  --purple: #9b72ff;
+  --teal: #00d4aa;
+  --text: #c8d8e8;
+  --text2: #8a9bb0;
+  --text3: #506070;
+  --white: #e8f0f8;
+  --sidebar-w: 280px;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-head: 'Rajdhani', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: var(--bg2); }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.sidebar-logo {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .logo-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.sidebar-logo h1 {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.sidebar-progress {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.progress-label {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-bottom: 6px;
+}
+.progress-bar-outer {
+  background: var(--bg3);
+  border-radius: 2px;
+  height: 4px;
+  width: 100%;
+}
+.progress-bar-inner {
+  background: linear-gradient(90deg, var(--green), var(--teal));
+  height: 4px;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.6s ease;
+}
+
+nav { flex: 1; padding: 12px 0; }
+
+.nav-section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  padding: 12px 20px 4px;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  font-size: 13px;
+  color: var(--text2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+}
+nav a:hover, nav a.active {
+  color: var(--green);
+  border-left-color: var(--green);
+  background: rgba(0,200,150,0.06);
+}
+nav a .nav-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  min-width: 20px;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+
+/* ── MAIN ── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 0 48px 80px;
+  max-width: 1000px;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.hero h1 span { color: var(--green); }
+.hero p {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 680px;
+  line-height: 1.8;
+}
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text2);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+/* ── SECTIONS ── */
+.section {
+  margin-bottom: 64px;
+  scroll-margin-top: 30px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--green);
+  min-width: 36px;
+}
+.section-header h2 {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.5px;
+}
+.section-header .section-tag {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-left: auto;
+}
+
+/* ── SUBSECTION ── */
+.subsection {
+  margin-bottom: 32px;
+}
+.subsection h3 {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--blue2);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.subsection h3::before {
+  content: '▶';
+  font-size: 10px;
+  color: var(--green);
+}
+.subsection h4 {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--amber);
+  margin: 16px 0 8px;
+}
+
+p { color: var(--text); margin-bottom: 10px; }
+
+/* ── CARDS ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 18px;
+}
+.card.green { border-left: 3px solid var(--green); }
+.card.blue  { border-left: 3px solid var(--blue); }
+.card.red   { border-left: 3px solid var(--red); }
+.card.amber { border-left: 3px solid var(--amber); }
+.card.purple{ border-left: 3px solid var(--purple); }
+.card.teal  { border-left: 3px solid var(--teal); }
+.card-title {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.card-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; margin-bottom: 14px; }
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 14px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(30,42,58,0.5);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li .cb {
+  width: 16px; height: 16px;
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  cursor: pointer;
+  background: var(--bg4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  transition: all 0.15s;
+  user-select: none;
+}
+.checklist li.done .cb {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg);
+}
+.checklist li.done .cb::after { content: '✓'; }
+.checklist li.done span { color: var(--text3); text-decoration: line-through; }
+
+/* ── CODE ── */
+.code-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--green2);
+  overflow-x: auto;
+  margin: 10px 0 16px;
+  line-height: 1.8;
+}
+.code-block .c { color: var(--text3); }
+.code-block .k { color: var(--blue); }
+.code-block .s { color: var(--amber); }
+
+/* ── TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.data-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border2);
+  background: var(--bg3);
+}
+.data-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+.data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── ALERT BOXES ── */
+.alert {
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin: 12px 0 20px;
+  border-left: 3px solid;
+  font-size: 14px;
+}
+.alert.warn  { background: rgba(255,179,71,0.08); border-color: var(--amber); color: #d4a060; }
+.alert.danger{ background: rgba(255,74,110,0.08); border-color: var(--red); color: #c05070; }
+.alert.info  { background: rgba(74,158,255,0.08); border-color: var(--blue); color: #80a8d8; }
+.alert.success{ background: rgba(0,200,150,0.08); border-color: var(--green); color: var(--green); }
+.alert strong { font-weight: 600; display: block; margin-bottom: 4px; }
+
+/* ── TIMELINE ── */
+.timeline { position: relative; padding-left: 28px; margin-bottom: 20px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--green), var(--blue), var(--purple));
+  border-radius: 1px;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -24px; top: 6px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 2px solid var(--green);
+}
+.tl-item.phase2::before { border-color: var(--blue); }
+.tl-item.phase3::before { border-color: var(--purple); }
+.tl-item.phase4::before { border-color: var(--amber); }
+.tl-item.phase5::before { border-color: var(--red); }
+.tl-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green);
+  margin-bottom: 3px;
+}
+.tl-item.phase2 .tl-label { color: var(--blue); }
+.tl-item.phase3 .tl-label { color: var(--purple); }
+.tl-item.phase4 .tl-label { color: var(--amber); }
+.tl-item.phase5 .tl-label { color: var(--red); }
+.tl-title {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.tl-desc { font-size: 13px; color: var(--text2); }
+
+/* ── PILL TAGS ── */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+.tag.green { color: var(--green); border-color: rgba(0,200,150,0.3); background: rgba(0,200,150,0.07); }
+.tag.blue  { color: var(--blue2); border-color: rgba(74,158,255,0.3); background: rgba(74,158,255,0.07); }
+.tag.red   { color: var(--red); border-color: rgba(255,74,110,0.3); background: rgba(255,74,110,0.07); }
+.tag.amber { color: var(--amber); border-color: rgba(255,179,71,0.3); background: rgba(255,179,71,0.07); }
+.tag.purple{ color: var(--purple); border-color: rgba(155,114,255,0.3); background: rgba(155,114,255,0.07); }
+
+/* ── STEP BOX ── */
+.step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.step-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 18px 18px;
+}
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.step-title {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.step-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+/* ── RESOURCE LIST ── */
+.resource-list { list-style: none; margin-bottom: 14px; }
+.resource-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.resource-list li:last-child { border-bottom: none; }
+.resource-icon {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--green);
+  background: rgba(0,200,150,0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.resource-content strong {
+  color: var(--white);
+  font-weight: 500;
+  display: block;
+  font-size: 13px;
+}
+.resource-content span { color: var(--text2); font-size: 12px; }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+/* ── TOP BAR ── */
+#topbar {
+  position: fixed;
+  top: 0; left: var(--sidebar-w); right: 0;
+  height: 44px;
+  background: rgba(10,12,14,0.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  gap: 16px;
+}
+.topbar-path {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+}
+.topbar-path span { color: var(--green); }
+.topbar-print {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text2);
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  padding: 5px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.topbar-print:hover { color: var(--green); border-color: var(--green); }
+
+#main { padding-top: 44px; }
+
+/* ── SCROLL SPY ── */
+.scan-line {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+  padding: 10px 0 6px;
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: #fff; color: #111; font-size: 11pt; }
+  #sidebar, #topbar { display: none !important; }
+  #main { margin-left: 0 !important; padding: 20px !important; max-width: 100% !important; }
+  .hero h1 { color: #111; font-size: 28pt; }
+  .hero-eyebrow, .section-num, .nav-num { color: #444; }
+  .section-header h2 { color: #111; font-size: 18pt; }
+  .subsection h3 { color: #222; }
+  .card, .step-box, .alert, .code-block {
+    border: 1px solid #ccc !important;
+    background: #f9f9f9 !important;
+    color: #111 !important;
+    break-inside: avoid;
+  }
+  .data-table th { background: #eee; color: #333; }
+  .data-table td { color: #111; border-color: #ddd; }
+  p, .checklist li, .resource-list li { color: #222 !important; }
+  .text2, .text3, .card-body, .step-body, .tl-desc { color: #555 !important; }
+  a { color: #1a5ccc !important; }
+  .section { break-before: auto; }
+  .hero { border-bottom: 2px solid #333; }
+  .hero-badge { background: #eee; border-color: #ccc; color: #333; }
+  .tag { color: #333 !important; background: #f0f0f0 !important; border-color: #ccc !important; }
+  .alert.warn  { background: #fff9ee !important; border-color: #c8931a !important; color: #7a5a10 !important; }
+  .alert.danger{ background: #fff0f2 !important; border-color: #c84060 !important; color: #802040 !important; }
+  .alert.info  { background: #eff5ff !important; border-color: #2060c0 !important; color: #204080 !important; }
+  .alert.success{ background: #f0fff8 !important; border-color: #0a8060 !important; color: #0a5040 !important; }
+  .tl-item::before { background: #fff; border-color: #333; }
+  .timeline::before { background: #ccc; }
+  @page { margin: 20mm 18mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-tag">// omniintelligence</div>
+    <h1>Google Mandiant<br>Red Team Prep</h1>
+  </div>
+  <div class="sidebar-progress">
+    <div class="progress-label">// overall_progress</div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+  </div>
+  <nav>
+    <div class="nav-section-label">// overview</div>
+    <a href="#overview"><span class="nav-num">00</span> Overview & Role Intel</a>
+    <a href="#timeline"><span class="nav-num">01</span> Master Timeline</a>
+
+    <div class="nav-section-label">// phases</div>
+    <a href="#phase1"><span class="nav-num">02</span> Phase 1 · Foundations</a>
+    <a href="#phase2"><span class="nav-num">03</span> Phase 2 · Core Security</a>
+    <a href="#phase3"><span class="nav-num">04</span> Phase 3 · Offensive Ops</a>
+    <a href="#phase4"><span class="nav-num">05</span> Phase 4 · Red Team Adv.</a>
+    <a href="#phase5"><span class="nav-num">06</span> Phase 5 · Tool Dev</a>
+
+    <div class="nav-section-label">// specializations</div>
+    <a href="#certs"><span class="nav-num">07</span> Certifications Roadmap</a>
+    <a href="#threatintel"><span class="nav-num">08</span> Threat Intelligence</a>
+    <a href="#reporting"><span class="nav-num">09</span> Report Writing</a>
+    <a href="#tooldev"><span class="nav-num">10</span> Programming & Tools</a>
+
+    <div class="nav-section-label">// interview</div>
+    <a href="#google-process"><span class="nav-num">11</span> Google Interview Process</a>
+    <a href="#technical-q"><span class="nav-num">12</span> Technical Questions</a>
+    <a href="#behavioral"><span class="nav-num">13</span> Behavioral (STAR)</a>
+    <a href="#communication"><span class="nav-num">14</span> Communication Skills</a>
+
+    <div class="nav-section-label">// preparation</div>
+    <a href="#lab"><span class="nav-num">15</span> Lab Setup</a>
+    <a href="#ctf"><span class="nav-num">16</span> CTF & Practice</a>
+    <a href="#resources"><span class="nav-num">17</span> Books & Courses</a>
+    <a href="#daily"><span class="nav-num">18</span> Daily Routine</a>
+
+    <div class="nav-section-label">// risk mgmt</div>
+    <a href="#mistakes"><span class="nav-num">19</span> Common Mistakes</a>
+    <a href="#worstcase"><span class="nav-num">20</span> Worst-Case Scenarios</a>
+    <a href="#checklist"><span class="nav-num">21</span> Final Checklist</a>
+  </nav>
+  <div class="sidebar-footer">
+    google_mandiant_redteam_prep_v1.0<br>
+    generated: 2026-05-21
+  </div>
+</aside>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="topbar-path">~/prep/<span>google-mandiant-red-team</span> $</div>
+  <button class="topbar-print" onclick="window.print()">⎙ Print / Save PDF</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">// security_engineer · red_team · google_mandiant</div>
+  <h1>Complete Preparation<br>Plan for <span>Red Team</span> at Google</h1>
+  <p>A ground-up, zero-assumption, 6-month omniintelligence preparation system for the Security Engineer, Red Team (Mandiant / Google Cloud) role. Every topic, every skill, every interview scenario — mapped, explained, and made actionable.</p>
+  <div class="hero-meta">
+    <div class="hero-badge"><span class="dot"></span> 6-Month Plan</div>
+    <div class="hero-badge"><span class="dot"></span> 21 Sections</div>
+    <div class="hero-badge"><span class="dot"></span> Beginner → Expert</div>
+    <div class="hero-badge"><span class="dot"></span> Printable</div>
+    <div class="hero-badge"><span class="dot"></span> Google Mandiant Specific</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ SECTION 0 ═══ -->
+<section class="section" id="overview">
+  <div class="section-header">
+    <span class="section-num">// 00</span>
+    <h2>Role Intelligence & What Google Really Wants</h2>
+    <span class="section-tag">CRITICAL READ FIRST</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Who is Mandiant?</h3>
+    <p>Mandiant is a world-leading cybersecurity firm acquired by Google in 2022, now part of Google Cloud. They are famous for being the team that uncovered major nation-state attacks (APT1, SolarWinds response, etc.). The Red Team here is not a junior "scan-and-report" pen-test team — it is an elite group that emulates the most sophisticated real-world threat actors (APTs, ransomware groups, nation-states) to test enterprise and government clients at the highest possible level.</p>
+    <div class="alert info"><strong>What this means for you:</strong> You are competing for a role where the bar is exceptional. Average knowledge is not enough. You need to demonstrate depth, practical ability, tool creation, and professional communication simultaneously.</div>
+  </div>
+
+  <div class="subsection">
+    <h3>Decoding the Job Description — Every Line Matters</h3>
+
+    <div class="card-grid">
+      <div class="card green">
+        <div class="card-title">Minimum: Offensive Certifications</div>
+        <div class="card-body">OSCP is the floor, not the ceiling. OSCE3, OSEP, OSEE are highly valued. SANS GPEN, GWAPT, GXPN also count. Plan your cert path from Day 1.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">3 Years: Security Tool Creation</div>
+        <div class="card-body">This is a hard requirement. You must have written actual security tools — C2 payloads, scanners, exploits, automation scripts — not just used existing tools.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">4+ Domains: Breadth Required</div>
+        <div class="card-body">Network protocols, threat intel, sysadmin, project management, app development, incident response, code review, reverse engineering. You need demonstrated competency in at least four.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">Client-Facing: Not Just Technical</div>
+        <div class="card-body">You must write executive reports, present to C-level, scope engagements, manage client relationships. Technical brilliance without communication skill fails here.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-title">Red & Purple Team</div>
+        <div class="card-body">Red = attack the client covertly. Purple = collaborative — show defenders what attackers are doing in real-time. Both require deep understanding of detection engineering.</div>
+      </div>
+      <div class="card red">
+        <div class="card-title">Threat Actor Intelligence</div>
+        <div class="card-body">Mandiant is famous for threat intel. You must understand APT groups, their TTPs, MITRE ATT&CK framework, and how to emulate specific threat actors accurately.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Assessment Types You Will Perform</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Assessment</th><th>What It Is</th><th>Skills Needed</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Red Team</strong></td><td>Full adversarial simulation. Multi-week. Covert. Objective-based (e.g., reach domain controller, exfiltrate specific data). Client's security team does NOT know when you are attacking.</td><td>Phishing, C2, lateral movement, persistence, evasion, OPSEC</td></tr>
+        <tr><td><strong>Purple Team</strong></td><td>Collaborative with the client's blue team. You attack, they observe, you explain. Improves detection capability together.</td><td>Everything in Red Team + deep knowledge of SIEM, EDR, detection rules</td></tr>
+        <tr><td><strong>External Pen Test</strong></td><td>Test perimeter security from outside. Time-boxed (typically 1-2 weeks).</td><td>OSINT, web app, VPN/firewall, email security, subdomain enumeration</td></tr>
+        <tr><td><strong>Web Application</strong></td><td>Deep assessment of web apps. OWASP Top 10 and beyond.</td><td>Burp Suite, SQLi, XSS, IDOR, auth bypass, API security, SSRF, XXE</td></tr>
+        <tr><td><strong>Mobile</strong></td><td>iOS and Android application security.</td><td>APK/IPA analysis, Frida, MobSF, SSL pinning bypass, reverse engineering</td></tr>
+        <tr><td><strong>Wireless</strong></td><td>WiFi and other wireless protocol security.</td><td>WPA2 attacks, PMKID, evil twin, Bluetooth, 802.1X bypasses</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 1 ═══ -->
+<section class="section" id="timeline">
+  <div class="section-header">
+    <span class="section-num">// 01</span>
+    <h2>Master Preparation Timeline</h2>
+    <span class="section-tag">6 MONTHS</span>
+  </div>
+  <p>This plan assumes you are starting from zero. If you have some background, compress or skip sections that already apply to you. Never skip the interview preparation phases regardless of experience level.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-label">WEEKS 1–4 · PHASE 1</div>
+      <div class="tl-title">Absolute Foundations</div>
+      <div class="tl-desc">Networking (OSI/TCP-IP), Linux/Windows OS internals, Python basics, cryptography basics, setting up your home lab. No skipping — these underpin everything.</div>
+    </div>
+    <div class="tl-item phase2">
+      <div class="tl-label">WEEKS 5–8 · PHASE 2</div>
+      <div class="tl-title">Core Security Concepts</div>
+      <div class="tl-desc">Security frameworks (MITRE ATT&CK, Cyber Kill Chain), vulnerability classes, OWASP Top 10, network scanning, Metasploit, Burp Suite basics.</div>
+    </div>
+    <div class="tl-item phase3">
+      <div class="tl-label">WEEKS 9–16 · PHASE 3</div>
+      <div class="tl-title">Offensive Security Mastery</div>
+      <div class="tl-desc">Deep-dive pentesting: web, network, mobile, wireless. Exploitation, post-exploitation, privilege escalation on Windows/Linux. Active Directory attacks. Reverse engineering and malware analysis basics.</div>
+    </div>
+    <div class="tl-item phase4">
+      <div class="tl-label">WEEKS 17–22 · PHASE 4</div>
+      <div class="tl-title">Red Team Operations + Tool Dev</div>
+      <div class="tl-desc">C2 frameworks, OPSEC, APT emulation, evasion techniques, custom tool development in Python and C#, threat intelligence integration.</div>
+    </div>
+    <div class="tl-item phase5">
+      <div class="tl-label">WEEKS 23–24 · PHASE 5</div>
+      <div class="tl-title">Interview Sprint</div>
+      <div class="tl-desc">Intensive behavioral prep, mock technical interviews, report writing practice, portfolio review, Google-specific research.</div>
+    </div>
+  </div>
+
+  <div class="alert warn"><strong>Non-negotiable parallel activities (every week):</strong> Do at least one CTF challenge per week. Read one threat intelligence report per week (Mandiant, CrowdStrike, Microsoft). Practice one technical topic in your lab every 3 days.</div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 2 ═══ -->
+<section class="section" id="phase1">
+  <div class="section-header">
+    <span class="section-num">// 02</span>
+    <h2>Phase 1 · Absolute Foundations (Weeks 1–4)</h2>
+    <span class="section-tag">WEEKS 1–4</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Module 1A · Computer Networking (The Most Critical Foundation)</h3>
+    <p>Every single security concept builds on networking. You cannot skip or rush this. Spend at least 10 full days on this topic.</p>
+
+    <h4>OSI Model — Deep Understanding Required</h4>
+    <div class="card-grid">
+      <div class="card green">
+        <div class="card-title">L7 Application</div>
+        <div class="card-body">HTTP/S, DNS, SMTP, FTP, SSH, SNMP, LDAP. Know how each protocol works byte-by-byte. Know what security issues exist at each.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">L4 Transport</div>
+        <div class="card-body">TCP 3-way handshake (SYN/SYN-ACK/ACK), TCP flags (RST, FIN, URG, PSH), UDP differences, port numbers, connection states.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">L3 Network</div>
+        <div class="card-body">IPv4/IPv6 subnetting, CIDR notation, routing (BGP basics), ICMP, NAT, ARP. Must be able to subnet in your head.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">L2 Data Link</div>
+        <div class="card-body">Ethernet frames, MAC addresses, VLANs, STP, ARP spoofing. Understand how switches vs routers work.</div>
+      </div>
+    </div>
+
+    <h4>Must-Know Protocols (Attack Perspective)</h4>
+    <table class="data-table">
+      <thead><tr><th>Protocol</th><th>Port</th><th>Attack Relevance</th><th>Learn In Depth</th></tr></thead>
+      <tbody>
+        <tr><td>DNS</td><td>53/UDP,TCP</td><td>Zone transfers, DNS tunneling, cache poisoning, subdomain enum</td><td>Zone transfer syntax, bind9 config</td></tr>
+        <tr><td>HTTP/HTTPS</td><td>80/443</td><td>Foundation of web app attacks. Headers, cookies, methods, status codes</td><td>Full RFC 7230, TLS handshake</td></tr>
+        <tr><td>SMB</td><td>445</td><td>EternalBlue, pass-the-hash, lateral movement, file share abuse</td><td>SMB protocol internals, NTLM auth</td></tr>
+        <tr><td>LDAP/Kerberos</td><td>389/88</td><td>AD attacks: Kerberoasting, AS-REP roasting, Pass-the-Ticket, DCSync</td><td>Active Directory authentication flow</td></tr>
+        <tr><td>RDP</td><td>3389</td><td>BlueKeep, credential attacks, lateral movement</td><td>RDP protocol, NLA auth</td></tr>
+        <tr><td>WinRM/WMI</td><td>5985/135</td><td>Lateral movement, remote execution</td><td>PowerShell remoting, WMI subscriptions</td></tr>
+        <tr><td>MSSQL/MySQL</td><td>1433/3306</td><td>SQLi, xp_cmdshell, UDF injection</td><td>xp_cmdshell enabling, linked servers</td></tr>
+      </tbody>
+    </table>
+
+    <ul class="checklist" id="net-checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can subnet /16, /24, /25, /26, /27 by hand without a calculator</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Know every common port number (top 1000) — quiz yourself with flashcards</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Capture and analyze real network traffic in Wireshark — identify protocols visually</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Understand the full TCP 3-way handshake + TLS 1.2/1.3 handshake</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can explain what happens when you type google.com in a browser (every single step)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Understand ARP, how ARP spoofing works, and how to detect it</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Set up a basic network in your lab with multiple VLANs and routing</span></li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3>Module 1B · Operating Systems Internals</h3>
+
+    <h4>Linux (Primary Attack Platform)</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Linux filesystem hierarchy — know what every /etc, /proc, /var, /dev directory does</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Linux permissions (rwx, SUID/SGID/Sticky bit, octal notation)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Process management: ps, top, lsof, /proc/[pid]/ directory structure</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Systemd, cron jobs, init scripts — know how to set up persistence via these</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Bash scripting: loops, conditionals, functions, parsing output with awk/sed/grep</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Networking commands: ip, ss, netstat, iptables, tcpdump, nmap</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>User/group management, sudo, PAM authentication</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Linux privilege escalation vectors: SUID binaries, sudo misconfig, cron, weak perms, kernel exploits</span></li>
+    </ul>
+
+    <h4>Windows (Primary Target Platform)</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Windows registry — know HKLM, HKCU, RunKey locations, how malware persists</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Windows authentication — NTLM (LM/NTLMv1/NTLMv2), Kerberos, how password hashes are stored (SAM, NTDS.dit)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Windows services, scheduled tasks, WMI subscriptions — persistence methods</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>PowerShell — scripting, execution policy bypass, AMSI, constrained language mode</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Windows access tokens, impersonation, SeImpersonatePrivilege (Juicy Potato etc.)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Windows event logs — Security, System, Application — what to look for in each</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Active Directory basics: forest/domain/OU structure, trusts, GPOs</span></li>
+    </ul>
+
+    <h4>Active Directory (Critical for Red Team)</h4>
+    <p>Active Directory is the backbone of enterprise environments. The majority of red team engagements involve AD. This is non-negotiable territory.</p>
+    <div class="card-grid">
+      <div class="card green">
+        <div class="card-title">AD Authentication</div>
+        <div class="card-body">Kerberos TGT/TGS flow, NTLM challenge/response, LDAP bind. Know the exact packets exchanged in each authentication method.</div>
+      </div>
+      <div class="card red">
+        <div class="card-title">AD Attack Paths</div>
+        <div class="card-body">Kerberoasting (SPN accounts), AS-REP Roasting (no preauth), Pass-the-Hash, Pass-the-Ticket, Overpass-the-Hash, DCSync, Golden/Silver Tickets, BloodHound attack paths.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">AD Lateral Movement</div>
+        <div class="card-body">PsExec, WMIexec, SMBexec, evil-WinRM, DCOM lateral movement. Know how each one works and what artifacts they leave on disk and in logs.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">AD Persistence</div>
+        <div class="card-body">Golden Ticket (krbtgt hash), Silver Ticket, Skeleton Key, ACL abuse (WriteDACL, GenericAll), AdminSDHolder, DSRM account.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Module 1C · Programming Fundamentals</h3>
+    <p>You need to write actual security tools. This requires genuine programming ability, not script-kiddie copy-paste.</p>
+
+    <h4>Python (Primary Language — Learn First)</h4>
+    <div class="code-block">
+<span class="c"># Security-relevant Python you must master:</span>
+<span class="c"># 1. Socket programming — raw TCP/UDP sockets</span>
+<span class="k">import</span> socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((<span class="s">'target.com'</span>, 80))
+s.send(<span class="k">b</span><span class="s">'GET / HTTP/1.1\r\nHost: target.com\r\n\r\n'</span>)
+
+<span class="c"># 2. Subprocess / OS interaction</span>
+<span class="k">import</span> subprocess, os, ctypes
+
+<span class="c"># 3. Struct module for binary protocol parsing</span>
+<span class="k">import</span> struct
+header = struct.pack(<span class="s">'!HHI'</span>, src_port, dst_port, seq_num)
+
+<span class="c"># 4. Scapy for packet crafting</span>
+<span class="k">from</span> scapy.all <span class="k">import</span> *
+pkt = IP(dst=<span class="s">"192.168.1.1"</span>)/TCP(dport=80, flags=<span class="s">"S"</span>)
+send(pkt)
+
+<span class="c"># 5. Requests + BeautifulSoup for web automation</span>
+<span class="c"># 6. argparse for CLI tool building</span>
+<span class="c"># 7. Threading/multiprocessing for speed</span>
+<span class="c"># 8. Cryptography library for custom crypto ops</span></div>
+
+    <h4>C# / .NET (Required for Windows Tool Development)</h4>
+    <p>Most modern offensive tooling targeting Windows environments (Cobalt Strike BOFs excluded) is written in C# because it runs in-memory via the CLR, has excellent Windows API access, and can evade many AV solutions. Learn C# well enough to write custom loaders, inject shellcode, and interact with Windows APIs.</p>
+
+    <h4>C / C++ (For Exploit Development)</h4>
+    <p>Buffer overflows, shellcode writing, custom kernel modules — these require C knowledge. Learn the basics: memory layout (stack/heap), pointers, memory management, Windows API calls via C.</p>
+
+    <h4>PowerShell (Windows Offensive Scripting)</h4>
+    <p>PowerShell is the native scripting language of Windows. Know how to: bypass AMSI, bypass execution policies, create reverse shells, enumerate AD, interact with COM objects, use Invoke-Expression and download-cradles.</p>
+  </div>
+
+  <div class="subsection">
+    <h3>Module 1D · Cryptography Basics</h3>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Symmetric encryption: AES (CBC vs CTR vs GCM modes), DES, 3DES — understand key sizes and attack surfaces</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Asymmetric encryption: RSA (key generation, e/d/n, common attacks like small-e, padding oracle), ECC basics</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Hashing: MD5, SHA-1, SHA-256, SHA-3 — understand collision resistance, preimage attacks, rainbow tables</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>TLS/SSL: full handshake flow, certificate chains, common vulns (BEAST, POODLE, HEARTBLEED)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Password hashing: NTLM, bcrypt, Argon2, salting — understand why plain MD5 is dangerous</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>PKI: CAs, certificate chains, CSRs, CRLs, OCSP — how certificates are used in real environments</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 3 ═══ -->
+<section class="section" id="phase2">
+  <div class="section-header">
+    <span class="section-num">// 03</span>
+    <h2>Phase 2 · Core Security Concepts (Weeks 5–8)</h2>
+    <span class="section-tag">WEEKS 5–8</span>
+  </div>
+
+  <div class="subsection">
+    <h3>MITRE ATT&CK Framework — Mandatory Mastery</h3>
+    <p>Mandiant literally helped build this framework. You must know it cold. Every technique, every tactic, and how they map to real threat actors. This framework is the language of the industry.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Tactic</th><th>ID</th><th>Key Techniques to Know</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Reconnaissance</strong></td><td>TA0043</td><td>T1595 Active Scanning, T1596 Search Open Databases, T1598 Phishing for Info</td></tr>
+        <tr><td><strong>Resource Dev.</strong></td><td>TA0042</td><td>T1583 Acquire Infrastructure, T1587 Develop Capabilities (malware, exploits)</td></tr>
+        <tr><td><strong>Initial Access</strong></td><td>TA0001</td><td>T1566 Phishing, T1190 Exploit Public App, T1133 External Remote Services</td></tr>
+        <tr><td><strong>Execution</strong></td><td>TA0002</td><td>T1059 Command Scripting, T1053 Scheduled Tasks, T1204 User Execution</td></tr>
+        <tr><td><strong>Persistence</strong></td><td>TA0003</td><td>T1547 Boot/Logon Autostart, T1543 Create/Modify Services, T1136 Create Account</td></tr>
+        <tr><td><strong>Privilege Esc.</strong></td><td>TA0004</td><td>T1055 Process Injection, T1068 Exploitation for Priv Esc, T1548 Abuse Elevation</td></tr>
+        <tr><td><strong>Defense Evasion</strong></td><td>TA0005</td><td>T1055 Process Injection, T1027 Obfuscation, T1036 Masquerading, T1562 Impair Defenses</td></tr>
+        <tr><td><strong>Credential Access</strong></td><td>TA0006</td><td>T1003 OS Credential Dumping (Mimikatz/LSASS), T1558 Steal Kerberos Tickets</td></tr>
+        <tr><td><strong>Discovery</strong></td><td>TA0007</td><td>T1083 File Dir Discovery, T1087 Account Discovery, T1482 Domain Trust Discovery</td></tr>
+        <tr><td><strong>Lateral Movement</strong></td><td>TA0008</td><td>T1021 Remote Services, T1550 Use Alt Auth Material, T1534 Internal Spearphishing</td></tr>
+        <tr><td><strong>Collection</strong></td><td>TA0009</td><td>T1560 Archive Data, T1074 Data Staged, T1056 Input Capture</td></tr>
+        <tr><td><strong>C2</strong></td><td>TA0011</td><td>T1071 App Layer Protocol (HTTP/S/DNS), T1572 Protocol Tunneling, T1095 Non-App Layer</td></tr>
+        <tr><td><strong>Exfiltration</strong></td><td>TA0010</td><td>T1041 Exfil Over C2, T1048 Exfil Over Alt Protocol, T1567 Exfil Over Web Service</td></tr>
+        <tr><td><strong>Impact</strong></td><td>TA0040</td><td>T1486 Data Encrypted (Ransomware), T1489 Service Stop, T1485 Data Destruction</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert info"><strong>Study method:</strong> Go to attack.mitre.org. For each technique in the above table, read: (1) the description, (2) procedure examples (real APT usage), (3) mitigations, (4) detection methods. This is how you speak Mandiant's language.</div>
+  </div>
+
+  <div class="subsection">
+    <h3>Cyber Kill Chain (Lockheed Martin)</h3>
+    <div class="step-grid">
+      <div class="step-box"><div class="step-num">STEP 01</div><div class="step-title">Reconnaissance</div><div class="step-body">Passive: OSINT (LinkedIn, job ads, Shodan, DNS). Active: port scanning, banner grabbing. Know tools: theHarvester, Maltego, Shodan, Censys, Recon-ng.</div></div>
+      <div class="step-box"><div class="step-num">STEP 02</div><div class="step-title">Weaponization</div><div class="step-body">Creating malicious payload + delivery mechanism. Macro-enabled Office docs, trojanized installers, HTA files, LNK files. Combining with exploits.</div></div>
+      <div class="step-box"><div class="step-num">STEP 03</div><div class="step-title">Delivery</div><div class="step-body">Getting the weapon to the target: phishing email, watering hole, USB drop, supply chain, malvertising.</div></div>
+      <div class="step-box"><div class="step-num">STEP 04</div><div class="step-title">Exploitation</div><div class="step-body">Triggering the exploit: user opens document, visits URL, or vulnerability is triggered server-side. Must understand the vulnerability class.</div></div>
+      <div class="step-box"><div class="step-num">STEP 05</div><div class="step-title">Installation</div><div class="step-body">Establishing foothold + persistence. Writing to disk, registry, scheduled tasks, WMI subscriptions, service creation.</div></div>
+      <div class="step-box"><div class="step-num">STEP 06</div><div class="step-title">C2 (Command &amp; Control)</div><div class="step-body">Establishing communication channel back to attacker. HTTP/S beacons, DNS tunneling, domain fronting, ICMP C2.</div></div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Core Tools You Must Master (Before Phase 3)</h3>
+    <table class="data-table">
+      <thead><tr><th>Tool</th><th>Category</th><th>Minimum Competency</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nmap</strong></td><td>Scanning</td><td>All scan types (SYN, UDP, version, OS), scripting engine (NSE scripts), timing, output formats. Know what each scan type looks like in Wireshark.</td></tr>
+        <tr><td><strong>Metasploit</strong></td><td>Exploitation</td><td>msfconsole, search/use/set/run, meterpreter commands, auxiliary modules, post-exploitation, generating payloads (msfvenom).</td></tr>
+        <tr><td><strong>Burp Suite</strong></td><td>Web App</td><td>Proxy, Repeater, Intruder, Scanner. Intercept HTTPS, modify requests, brute-force login, automated scanning, BApp Store extensions.</td></tr>
+        <tr><td><strong>Wireshark</strong></td><td>Packet Analysis</td><td>Capture filters, display filters, following TCP streams, decrypting TLS (with key), analyzing protocols, identifying anomalies.</td></tr>
+        <tr><td><strong>BloodHound</strong></td><td>AD Enum</td><td>Running SharpHound collectors, importing data, finding attack paths to Domain Admin, understanding edges (AdminTo, HasSession, etc.).</td></tr>
+        <tr><td><strong>Mimikatz</strong></td><td>Credential Dump</td><td>sekurlsa::logonpasswords, lsadump::dcsync, kerberos::list, pass-the-hash, privilege::debug. Know what triggers AV alerts.</td></tr>
+        <tr><td><strong>Cobalt Strike</strong></td><td>C2 Framework</td><td>Beacon types, malleable C2 profiles, aggressor scripts, post-ex configuration, team server setup. (Know conceptually even if no license.)</td></tr>
+        <tr><td><strong>Impacket</strong></td><td>Windows Attacks</td><td>psexec.py, wmiexec.py, smbexec.py, secretsdump.py, GetNPUsers.py, GetST.py. Understand what each one does under the hood.</td></tr>
+        <tr><td><strong>John/Hashcat</strong></td><td>Password Cracking</td><td>Dictionary attacks, rules, masks, hybrid attacks. Know which hash types are crackable and which modes to use.</td></tr>
+        <tr><td><strong>Responder</strong></td><td>Poisoning</td><td>LLMNR/NBT-NS/mDNS poisoning. Capturing NTLMv2 hashes, relaying with ntlmrelayx, understanding when it works (SMB signing disabled).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 4 ═══ -->
+<section class="section" id="phase3">
+  <div class="section-header">
+    <span class="section-num">// 04</span>
+    <h2>Phase 3 · Offensive Security Mastery (Weeks 9–16)</h2>
+    <span class="section-tag">WEEKS 9–16</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Web Application Security</h3>
+    <p>Web app testing is a core skill. You will be expected to find vulnerabilities beyond automated scanner output — manual discovery and chaining is what Mandiant does.</p>
+
+    <h4>OWASP Top 10 — Know Every One Deeply</h4>
+    <table class="data-table">
+      <thead><tr><th>Vulnerability</th><th>Attack &amp; Exploit</th><th>Lab It</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SQL Injection</strong></td><td>Error-based, blind (boolean + time), UNION-based, OOB. Know how to extract data, bypass WAFs, escalate to OS (xp_cmdshell, UDF injection).</td><td>DVWA, WebGoat, SQLmap + manual</td></tr>
+        <tr><td><strong>Broken Auth</strong></td><td>Credential stuffing, password spraying, session token weaknesses, JWT attacks (alg:none, RS256→HS256), brute-force.</td><td>JWT.io, HackTheBox auth challenges</td></tr>
+        <tr><td><strong>XSS (Reflected/Stored/DOM)</strong></td><td>Cookie theft, keylogging, BeEF framework, CSRF via XSS, CSP bypass techniques, DOM clobbering.</td><td>XSS challenges on PortSwigger</td></tr>
+        <tr><td><strong>IDOR / Broken Access</strong></td><td>Object ID tampering, mass assignment, forced browsing, function-level access control flaws.</td><td>Manual testing on DVWA, API endpoints</td></tr>
+        <tr><td><strong>Security Misconfiguration</strong></td><td>Default credentials, exposed admin interfaces, verbose error messages, directory listing, HTTP methods (PUT, DELETE, TRACE).</td><td>Real apps + Nikto</td></tr>
+        <tr><td><strong>SSRF</strong></td><td>Accessing internal metadata (AWS 169.254.169.254), port scanning internal network, chaining to RCE.</td><td>PortSwigger SSRF labs</td></tr>
+        <tr><td><strong>XXE</strong></td><td>File read (/etc/passwd), SSRF via XXE, blind XXE via OOB DNS/HTTP.</td><td>PortSwigger XXE labs</td></tr>
+        <tr><td><strong>Deserialization</strong></td><td>Java/.NET/PHP deserialization — ysoserial gadget chains, PHP unserialize(), pickle in Python.</td><td>OWASP WebGoat deserialization</td></tr>
+        <tr><td><strong>Components w/ Vulns</strong></td><td>CVE research, outdated libraries, Log4Shell (CVE-2021-44228), Spring4Shell.</td><td>Known CVE labs on HackTheBox</td></tr>
+        <tr><td><strong>Cryptographic Failures</strong></td><td>Weak cipher suites, hardcoded secrets, improper TLS validation, predictable tokens, padding oracle.</td><td>Cryptopals challenges</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Advanced Web Vulnerabilities (Beyond OWASP Top 10)</h4>
+    <div class="card-grid">
+      <div class="card purple">
+        <div class="card-title">SSTI (Template Injection)</div>
+        <div class="card-body">Jinja2, Twig, Freemarker. Know the detection payload {{7*7}} and escalation to RCE for each template engine.</div>
+      </div>
+      <div class="card red">
+        <div class="card-title">OAuth / OIDC Attacks</div>
+        <div class="card-body">Redirect URI manipulation, state parameter forgery, implicit flow token leakage, code interception. Common in modern apps.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-title">GraphQL Attacks</div>
+        <div class="card-body">Introspection abuse, batching attacks, IDOR via GraphQL, field suggestions revealing schema, nested query DoS.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">HTTP Request Smuggling</div>
+        <div class="card-body">CL.TE, TE.CL, TE.TE variants. Poisoning front-end caches, bypassing access controls, stealing credentials.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">Web Cache Poisoning</div>
+        <div class="card-body">Unkeyed headers (X-Forwarded-Host), fat GET requests, cache-buster removal, chaining with other vulns.</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">Prototype Pollution</div>
+        <div class="card-body">JavaScript __proto__ manipulation, server-side (Node.js) and client-side variants, escalation to RCE in some frameworks.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Network Penetration Testing</h3>
+    <h4>Methodology (Step by Step)</h4>
+    <div class="step-grid">
+      <div class="step-box"><div class="step-num">STEP 01</div><div class="step-title">Scoping &amp; Planning</div><div class="step-body">Define scope, rules of engagement, emergency contacts, start/end times. Get written authorization. Understand IP ranges, excluded systems.</div></div>
+      <div class="step-box"><div class="step-num">STEP 02</div><div class="step-title">OSINT &amp; Recon</div><div class="step-body">Passive: Shodan, Censys, theHarvester, LinkedIn, DNS enum, certificate transparency logs. Active: DNS zone transfer, WHOIS, Google Dorks.</div></div>
+      <div class="step-box"><div class="step-num">STEP 03</div><div class="step-title">Scanning &amp; Enumeration</div><div class="step-body">Nmap SYN scan, service version detection, OS detection, NSE scripts (vuln, auth, default). Banner grabbing. UDP scan for key ports.</div></div>
+      <div class="step-box"><div class="step-num">STEP 04</div><div class="step-title">Vulnerability Analysis</div><div class="step-body">Manual + automated. Nessus/OpenVAS results interpreted with experience. Cross-reference CVE databases. Prioritize by exploitability and impact.</div></div>
+      <div class="step-box"><div class="step-num">STEP 05</div><div class="step-title">Exploitation</div><div class="step-body">Manual exploitation preferred. Document every step. Capture screenshots/logs as evidence. Use Metasploit only when manual fails or for known reliable modules.</div></div>
+      <div class="step-box"><div class="step-num">STEP 06</div><div class="step-title">Post-Exploitation</div><div class="step-body">Privilege escalation, credential harvesting, lateral movement, data collection (non-destructive). Map full attack path to demonstrate real impact.</div></div>
+    </div>
+
+    <h4>Internal Network Attack Chains</h4>
+    <p>Know these attack chains end-to-end. Practice each in your lab:</p>
+    <div class="code-block">
+<span class="c"># Chain 1: LLMNR Poisoning → Credential Capture → Password Crack → Access</span>
+Responder -I eth0 -rdwv  <span class="c"># Capture NTLMv2 hash</span>
+hashcat -m 5600 captured.hash /usr/share/wordlists/rockyou.txt
+
+<span class="c"># Chain 2: SMB Relay (when SMB signing disabled)</span>
+ntlmrelayx.py -tf targets.txt -smb2support -c "whoami"
+
+<span class="c"># Chain 3: Kerberoasting</span>
+GetUserSPNs.py domain.local/user:password -outputfile hashes.txt
+hashcat -m 13100 hashes.txt wordlist.txt
+
+<span class="c"># Chain 4: BloodHound Path → DCSync</span>
+SharpHound.exe --CollectionMethod All
+<span class="c"># Import to Neo4j, find path to DA</span>
+secretsdump.py domain/admin@dc-ip  <span class="c"># DCSync</span></div>
+  </div>
+
+  <div class="subsection">
+    <h3>Mobile Security Testing</h3>
+    <h4>Android</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Static analysis: apktool decompile, jadx for Java source, grep for hardcoded secrets, API keys, insecure functions</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Dynamic analysis: Frida for hooking Java/native methods, SSL pinning bypass, runtime manipulation</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Network traffic interception: adb proxy settings, Burp Suite cert installation, Charles proxy</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Common vulns: insecure data storage (SharedPrefs, SQLite, logs), exported activities, deeplink abuse, webview RCE</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Tools: MobSF, drozer, apktool, jadx, Frida, objection</span></li>
+    </ul>
+
+    <h4>iOS</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Static analysis: class-dump, otool, strings — find hardcoded secrets, URL schemes, exported functions</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>SSL pinning bypass with Frida scripts (objection: ios sslpinning disable)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Keychain analysis, plist files, data protection classes</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Jailbroken device testing vs. non-jailbroken techniques (Frida gadget injection)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>OWASP Mobile Top 10 — apply to both platforms</span></li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3>Wireless Security Testing</h3>
+    <table class="data-table">
+      <thead><tr><th>Attack</th><th>Target</th><th>Tools</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>WPA2 Handshake Capture + Crack</td><td>WPA2-PSK networks</td><td>airmon-ng, airodump-ng, aireplay-ng, hashcat</td><td>4-way handshake capture → offline dictionary attack</td></tr>
+        <tr><td>PMKID Attack</td><td>WPA2-PSK networks</td><td>hcxdumptool, hcxtools, hashcat</td><td>Newer — no need to wait for a client to connect</td></tr>
+        <tr><td>Evil Twin / Rogue AP</td><td>Enterprise + personal</td><td>hostapd-wpe, airbase-ng, WiFi Pineapple</td><td>Deauth target, capture PEAP credentials</td></tr>
+        <tr><td>802.1X / PEAP Cracking</td><td>Enterprise WPA2</td><td>hostapd-wpe, asleap</td><td>Capture MSCHAPv2 challenge/response → crack with asleap</td></tr>
+        <tr><td>WPS Pin Attack</td><td>WPS-enabled APs</td><td>reaver, bully</td><td>Pixie Dust attack for offline computation</td></tr>
+        <tr><td>Bluetooth Attacks</td><td>BT/BLE devices</td><td>btlejack, gatttool, btscanner</td><td>Enumeration, BLE sniffing, MITM, BlueBorne CVE chains</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsection">
+    <h3>Reverse Engineering &amp; Malware Analysis</h3>
+    <p>At Mandiant, you will encounter real malware. Understanding how it works is essential for both creating realistic payloads and analyzing adversary tools.</p>
+
+    <div class="card-grid">
+      <div class="card green">
+        <div class="card-title">Static Analysis</div>
+        <div class="card-body">Without running: file type, strings, imports/exports (PE headers), entropy (packed/encrypted), function signatures, YARA rules matching, disassembly.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Dynamic Analysis</div>
+        <div class="card-body">Running in sandbox: process monitor, Process Hacker, Wireshark, regshot (registry changes), API logging. Cuckoo sandbox setup.</div>
+      </div>
+      <div class="card red">
+        <div class="card-title">Disassembly / Decompilation</div>
+        <div class="card-body">IDA Pro / Ghidra / Binary Ninja. Reading assembly (x86/x64), understanding calling conventions, identifying algorithms, cross-references.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">Debugging</div>
+        <div class="card-body">x64dbg / WinDbg. Setting breakpoints, stepping through code, inspecting memory/registers, patching instructions, anti-debug bypass.</div>
+      </div>
+    </div>
+
+    <h4>Assembly Language Basics (x86/x64)</h4>
+    <div class="code-block">
+<span class="c">; You must be able to READ (not necessarily write) this:</span>
+<span class="c">; Register basics: RAX (return value), RBX, RCX (1st arg), RDX (2nd arg)</span>
+<span class="c">; RSP (stack pointer), RBP (base pointer), RIP (instruction pointer)</span>
+
+mov    rax, 0x0          <span class="c">; zero out rax</span>
+push   rbp               <span class="c">; save base pointer (function prologue)</span>
+sub    rsp, 0x28         <span class="c">; allocate stack space</span>
+call   CreateProcessW    <span class="c">; Windows API call</span>
+test   eax, eax          <span class="c">; check return value</span>
+je     .error            <span class="c">; jump if zero (error)</span>
+<span class="c">; Know: MOV, PUSH/POP, CALL/RET, JMP/Jcc, CMP/TEST, ADD/SUB, AND/OR/XOR</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 5 ═══ -->
+<section class="section" id="phase4">
+  <div class="section-header">
+    <span class="section-num">// 05</span>
+    <h2>Phase 4 · Red Team Advanced Operations (Weeks 17–22)</h2>
+    <span class="section-tag">WEEKS 17–22</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Red Team Methodology &amp; Operations</h3>
+    <p>A Red Team engagement is fundamentally different from a pen test. The goal is not to find vulnerabilities — it is to test the organization's ability to detect and respond to a realistic adversary operating with specific objectives.</p>
+
+    <div class="step-grid">
+      <div class="step-box"><div class="step-num">PHASE A</div><div class="step-title">Planning &amp; Scoping</div><div class="step-body">Define objectives (reach Domain Admin? Exfiltrate specific data? Achieve physical access?). Define rules of engagement. Establish deconfliction process. Identify out-of-scope systems. Set timeline.</div></div>
+      <div class="step-box"><div class="step-num">PHASE B</div><div class="step-title">Threat Profile Selection</div><div class="step-body">Which threat actor do you emulate? APT29 for a government client? FIN7 for a financial org? Select based on client's threat landscape. Map their TTPs to your attack plan using ATT&CK.</div></div>
+      <div class="step-box"><div class="step-num">PHASE C</div><div class="step-title">Infrastructure Setup</div><div class="step-body">Redirectors, C2 servers (geographically distributed), domain fronting or CDN masking, malleable C2 profiles, OPSEC-hardened attacker infrastructure.</div></div>
+      <div class="step-box"><div class="step-num">PHASE D</div><div class="step-title">Initial Access</div><div class="step-body">Phishing campaigns (pretexting, lure design), supply chain compromise scenarios, exposed services exploitation, physical access (tailgating, USB drops).</div></div>
+      <div class="step-box"><div class="step-num">PHASE E</div><div class="step-title">Exploitation &amp; Escalation</div><div class="step-body">Foothold → privilege escalation → lateral movement → domain compromise. Document every step for the report. Maintain OPSEC throughout.</div></div>
+      <div class="step-box"><div class="step-num">PHASE F</div><div class="step-title">Objective Achievement</div><div class="step-body">Reach the crown jewels. Take a screenshot or exfil a small proof-of-concept file. This demonstrates real impact. Prepare for the debrief.</div></div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>C2 Frameworks — Deep Understanding</h3>
+    <table class="data-table">
+      <thead><tr><th>Framework</th><th>Language</th><th>Key Features</th><th>Where Used</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Cobalt Strike</strong></td><td>Java (server), various (agent)</td><td>Beacons (HTTP/S/DNS/SMB), malleable C2, Aggressor scripting, BOF support, team server. Industry standard for red teams.</td><td>Most enterprise red teams, MSSP engagements</td></tr>
+        <tr><td><strong>Sliver</strong></td><td>Go</td><td>Open-source alternative to CS. mTLS, HTTP/S, DNS, WireGuard transports. BOF support. Armory (extension marketplace).</td><td>Red teams without CS budget, research</td></tr>
+        <tr><td><strong>Brute Ratel C4</strong></td><td>C</td><td>Badgers (agents), user-defined reflective DLL, built-in evasion. Specifically designed to evade EDR/AV.</td><td>High-end adversarial simulation</td></tr>
+        <tr><td><strong>Mythic</strong></td><td>Python/Go</td><td>Modular framework, multiple agents (Apollo, Poseidon), web UI, docker-based. Research-friendly.</td><td>Academic, research, custom engagements</td></tr>
+        <tr><td><strong>Empire / Starkiller</strong></td><td>Python/PowerShell</td><td>Older but still relevant. Good for PowerShell-based attacks. Web UI (Starkiller) added later.</td><td>Training, older engagement simulations</td></tr>
+      </tbody>
+    </table>
+
+    <h4>C2 OPSEC — Critical Concepts</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Domain categorization and age — use domains categorized as business/finance, aged 6+ months, with clean Alexa ranking</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Redirectors — Apache/Nginx mod_rewrite rules to redirect non-C2 traffic to legitimate sites, protecting C2 server IP</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Malleable C2 profiles — make beacon traffic look like legitimate app (Slack, OneDrive, etc.) to avoid network detection</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Sleep/jitter — randomize check-in intervals so traffic doesn't appear periodic (a key detection indicator)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Domain fronting — route traffic through trusted CDN (Cloudflare, Azure) to hide true C2 destination</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Egress port selection — use 443 primarily, test other ports against client firewall; avoid outbound 4444 (too obvious)</span></li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3>AV/EDR Evasion Techniques</h3>
+    <p>Modern endpoint security (CrowdStrike, SentinelOne, Microsoft Defender ATP, Carbon Black) uses behavioral analysis, memory scanning, and kernel-level hooks. Traditional obfuscation is not enough.</p>
+
+    <div class="card-grid">
+      <div class="card red">
+        <div class="card-title">Process Injection</div>
+        <div class="card-body">Classic (VirtualAllocEx/WriteProcessMemory/CreateRemoteThread), Process Hollowing, DLL Injection, Reflective DLL Injection, APC Injection, Thread Hijacking. Know the Windows APIs for each.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">AMSI / ETW Bypass</div>
+        <div class="card-body">Patch amsi.dll in memory (AmsiScanBuffer), ETW unhooking, syscall direct invocation to bypass userland hooks. Use SysWhispers for direct syscalls.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">Living Off The Land (LOLBins)</div>
+        <div class="card-body">Use legitimate Windows binaries for malicious purposes: certutil, mshta, wscript, regsvr32, rundll32, msiexec. These are trusted so AV doesn't alert.</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">Shellcode Obfuscation</div>
+        <div class="card-body">XOR/AES encryption of payload, staged delivery (stager downloads full payload at runtime), indirect syscalls, custom PE loaders, position-independent shellcode.</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">BOF (Beacon Object Files)</div>
+        <div class="card-body">Small C programs compiled as COFF objects, executed in-process within a Cobalt Strike beacon. Less noisy than spawning new processes. Know how to write and use BOFs.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-title">Kernel Bypass</div>
+        <div class="card-body">BYOVD (Bring Your Own Vulnerable Driver), kernel-mode rootkits, CI bypass. Advanced — required for the highest-level engagements. Know PPL bypasses.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Social Engineering &amp; Phishing</h3>
+    <p>Initial access in most real-world APT attacks starts with social engineering. You must know how to design and execute a realistic phishing campaign.</p>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Pretexting: develop a convincing cover story (IT helpdesk, vendor, HR) tailored to target organization</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Email infrastructure: SPF/DKIM/DMARC configuration for spoofing or lookalike domains, avoid spam filters</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Lure design: Microsoft 365 credential harvest, DocuSign fake, HR policy update with malicious link</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Phishing frameworks: GoPhish, EvilGinx2 (AiTM — bypasses MFA), Modlishka, Evilnginx</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Spear phishing: LinkedIn OSINT for personalization, email timing analysis, CEO/CFO targeting for BEC</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Vishing (voice phishing): scripting calls, pretexting as IT support, urgency creation techniques</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>MFA bypass techniques: SIM swapping awareness, AiTM proxy attacks, push notification fatigue</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 6 ═══ -->
+<section class="section" id="phase5">
+  <div class="section-header">
+    <span class="section-num">// 06</span>
+    <h2>Phase 5 · Tool Development (Weeks 20–24)</h2>
+    <span class="section-tag">WEEKS 20–24</span>
+  </div>
+
+  <div class="subsection">
+    <h3>What "3 Years of Security Tool Creation" Actually Means</h3>
+    <div class="alert warn"><strong>This is a hard requirement — not optional:</strong> Google wants engineers who BUILD tools, not just use them. Your portfolio must include original security tools you wrote. Below is what you need to create before applying.</div>
+
+    <h4>Minimum Portfolio for Application</h4>
+    <table class="data-table">
+      <thead><tr><th>Tool Category</th><th>Example Project</th><th>Language</th><th>Why It Matters</th></tr></thead>
+      <tbody>
+        <tr><td>Network Scanner</td><td>Custom port scanner with service detection and banner grabbing, faster than Nmap for specific use cases</td><td>Python (socket, asyncio)</td><td>Demonstrates understanding of raw networking and async programming</td></tr>
+        <tr><td>C2 Prototype</td><td>Simple HTTP C2 server + agent: agent polls server, receives commands, executes, returns output</td><td>Python (server) + C# (agent)</td><td>Shows deep understanding of C2 architecture and Windows programming</td></tr>
+        <tr><td>Credential Dumper</td><td>LSASS memory reader or SAM database parser without using Mimikatz</td><td>C# / C</td><td>Windows internals knowledge, Windows API usage, EDR evasion awareness</td></tr>
+        <tr><td>Payload Obfuscator</td><td>Shellcode encryptor/loader that reads shellcode, encrypts with AES, generates a dropper that decrypts at runtime</td><td>Python (encoder) + C# (loader)</td><td>Evasion understanding, crypto implementation, PE/shellcode knowledge</td></tr>
+        <tr><td>Active Directory Enumerator</td><td>LDAP querier that extracts users, groups, SPNs, ACLs without using BloodHound/SharpHound</td><td>Python (ldap3) or C#</td><td>AD protocol knowledge, custom tooling beyond existing frameworks</td></tr>
+        <tr><td>Web Fuzzer</td><td>Custom endpoint discovery + parameter fuzzer with rate limiting, custom headers, filter response codes</td><td>Python (asyncio + aiohttp)</td><td>Web application testing knowledge + performance optimization</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Python Tool Development — Key Libraries to Master</h4>
+    <div class="code-block">
+<span class="c"># Core security tool libraries:</span>
+
+<span class="c"># 1. Low-level networking</span>
+<span class="k">import</span> socket, ssl, struct, asyncio
+
+<span class="c"># 2. Packet crafting (requires root)</span>
+<span class="k">from</span> scapy.all <span class="k">import</span> IP, TCP, UDP, send, sniff, Raw
+
+<span class="c"># 3. HTTP manipulation</span>
+<span class="k">import</span> requests
+<span class="k">from</span> requests.adapters <span class="k">import</span> HTTPAdapter
+
+<span class="c"># 4. Cryptography</span>
+<span class="k">from</span> cryptography.hazmat.primitives.ciphers <span class="k">import</span> Cipher, algorithms, modes
+<span class="k">from</span> cryptography.hazmat.primitives <span class="k">import</span> hashes, serialization
+
+<span class="c"># 5. LDAP for AD interaction</span>
+<span class="k">import</span> ldap3
+
+<span class="c"># 6. SMB protocol</span>
+<span class="k">from</span> impacket <span class="k">import</span> smb, ntlm
+
+<span class="c"># 7. CLI and argument parsing</span>
+<span class="k">import</span> argparse, logging, threading, queue
+
+<span class="c"># 8. Binary parsing</span>
+<span class="k">import</span> ctypes, mmap</div>
+
+    <h4>C# for Windows Offensive Tools</h4>
+    <div class="code-block">
+<span class="c">// Key C# Windows API usage you need to know:</span>
+<span class="k">using</span> System.Runtime.InteropServices;
+
+<span class="c">// P/Invoke for Windows API calls</span>
+[DllImport(<span class="s">"kernel32.dll"</span>)]
+static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress,
+    uint dwSize, uint flAllocationType, uint flProtect);
+
+[DllImport(<span class="s">"kernel32.dll"</span>)]
+static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress,
+    byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
+
+<span class="c">// In-memory execution — avoiding touching disk</span>
+<span class="c">// Reflection to load assemblies: Assembly.Load(byte[])</span>
+<span class="c">// Execute .NET assemblies directly in memory</span>
+var assembly = Assembly.Load(rawBytes);
+var entryPoint = assembly.EntryPoint;
+entryPoint.Invoke(null, new object[] { args });</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 7 ═══ -->
+<section class="section" id="certs">
+  <div class="section-header">
+    <span class="section-num">// 07</span>
+    <h2>Certifications Roadmap</h2>
+    <span class="section-tag">PRIORITY INVESTMENT</span>
+  </div>
+
+  <div class="subsection">
+    <h3>The Certification Hierarchy for This Role</h3>
+    <div class="alert success"><strong>Priority Order:</strong> OSCP first (it's the gate), then choose OSEP or OSCE3 based on your specialization. SANS certifications are expensive but highly valued by Mandiant specifically.</div>
+
+    <table class="data-table">
+      <thead><tr><th>Cert</th><th>Provider</th><th>Cost (USD)</th><th>Difficulty</th><th>Focus</th><th>When to Attempt</th></tr></thead>
+      <tbody>
+        <tr><td><strong>OSCP</strong></td><td>OffSec</td><td>~$1,499</td><td>Hard</td><td>Pen testing, exploiting real machines, report writing. The 24-hour practical exam requires compromising multiple machines.</td><td>After completing Phase 3 of this plan. Solve 70+ HackTheBox/OSCP-like machines first.</td></tr>
+        <tr><td><strong>OSEP</strong></td><td>OffSec</td><td>~$1,499</td><td>Very Hard</td><td>Evasion, C2, advanced Windows exploitation, AD attacks at depth. PEN-300 course covers exactly what Mandiant does.</td><td>After OSCP and completing your tool portfolio</td></tr>
+        <tr><td><strong>OSCE3</strong></td><td>OffSec</td><td>Bundled</td><td>Extreme</td><td>Combines OSEP + OSED + OSWE. Considered the gold standard for offensive security.</td><td>Long-term goal (1-2 years post-OSCP)</td></tr>
+        <tr><td><strong>OSED</strong></td><td>OffSec</td><td>~$1,499</td><td>Expert</td><td>Windows exploit development: buffer overflows, SEH, DEP/ASLR bypass, format strings.</td><td>After OSCP, if you want exploit development focus</td></tr>
+        <tr><td><strong>OSWE</strong></td><td>OffSec</td><td>~$1,499</td><td>Hard</td><td>Advanced web app exploitation — code review, white-box testing, chaining vulns.</td><td>After OSCP, if web app is your primary specialization</td></tr>
+        <tr><td><strong>GPEN</strong></td><td>SANS</td><td>~$8,000</td><td>Moderate</td><td>Pen testing methodology. SANS stamp = very well regarded at Mandiant.</td><td>Can attempt before OSCP, funds permitting</td></tr>
+        <tr><td><strong>GXPN</strong></td><td>SANS</td><td>~$8,000</td><td>Hard</td><td>Advanced pen testing — network, application, exploitation. Pairs well with OSCP.</td><td>After OSCP, strong Mandiant alignment</td></tr>
+        <tr><td><strong>CCSAS / CCT INF</strong></td><td>CREST</td><td>~$1,000+</td><td>Very Hard</td><td>UK-based certifications, internationally recognized. CCT INF = infrastructure. Required for some UK government work.</td><td>If targeting UK market or enterprise clients</td></tr>
+        <tr><td><strong>CRTO</strong></td><td>Zero-Point Security</td><td>~$449</td><td>Moderate-Hard</td><td>Red Team Operator using Cobalt Strike. Very practical. Affordable. Directly aligned with this role.</td><td>After Phase 4. Do this alongside C2 study.</td></tr>
+        <tr><td><strong>CRTE</strong></td><td>Altered Security</td><td>~$249</td><td>Moderate</td><td>Red Team Expert on Active Directory. Excellent AD attack depth. Affordable.</td><td>During Phase 3, after AD basics are solid</td></tr>
+      </tbody>
+    </table>
+
+    <h4>OSCP Preparation Specifically</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Complete ALL machines in TJnull's OSCP-like HackTheBox list (50+ machines) — aim for 70+ total machines solved</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Set up your own Proving Grounds Practice subscription (OffSec's lab platform)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Write detailed notes for EVERY machine you compromise — build your own methodology notes</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Take the PEN-200 course materials seriously — the exercises count toward bonus points (10 pts)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Practice writing reports in the OSCP format for 3+ machines before the exam</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Time yourself: can you compromise a medium machine in under 2 hours? That's the OSCP pace needed.</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Buffer overflow (Windows BOF) — practice the OSCP methodology until it's muscle memory</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 8 ═══ -->
+<section class="section" id="threatintel">
+  <div class="section-header">
+    <span class="section-num">// 08</span>
+    <h2>Threat Intelligence — Mandiant's Core Competency</h2>
+    <span class="section-tag">DIFFERENTIATOR</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Why Threat Intel Matters More Here Than Anywhere Else</h3>
+    <p>Mandiant is the world's leading threat intelligence firm. Their adversarial simulations are not generic — they emulate SPECIFIC threat actors with documented TTPs. You must understand this deeply to stand out in the interview.</p>
+
+    <h4>Key APT Groups to Study (Know Their TTPs)</h4>
+    <table class="data-table">
+      <thead><tr><th>Group</th><th>Attributed To</th><th>Sector Targets</th><th>Key TTPs</th></tr></thead>
+      <tbody>
+        <tr><td><strong>APT29 / Cozy Bear</strong></td><td>Russia (SVR)</td><td>Government, think tanks, healthcare (COVID-19 vaccines)</td><td>SUNBURST (supply chain), WellMess malware, spear phishing, living off the land, OAuth token theft, MagicWeb</td></tr>
+        <tr><td><strong>APT28 / Fancy Bear</strong></td><td>Russia (GRU)</td><td>Government, military, election interference</td><td>X-Agent, Zebrocy, credential phishing, VPN exploitation, Router compromise</td></tr>
+        <tr><td><strong>APT41</strong></td><td>China (dual — espionage + financially motivated)</td><td>Healthcare, telecom, technology, video games</td><td>Supply chain attacks, PlugX, ShadowPad, Winnti, aggressive exploitation of 1-day vulns</td></tr>
+        <tr><td><strong>Lazarus Group</strong></td><td>North Korea (RGB)</td><td>Financial (SWIFT attacks), cryptocurrency, defense</td><td>BLINDINGCAN, WannaCry, operation GhostSecret, DLLHijacking, custom implants, spear phishing</td></tr>
+        <tr><td><strong>FIN7</strong></td><td>Criminal group (Ukraine)</td><td>Retail, hospitality, financial (POS systems)</td><td>Carbanak, Bateleur JS backdoor, spear phishing, elaborate social engineering at scale</td></tr>
+        <tr><td><strong>UNC2452 / NOBELIUM</strong></td><td>Russia (SVR)</td><td>IT supply chain, government</td><td>SolarWinds compromise, TEARDROP malware, sophisticated supply chain, OAuth abuse</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Where to Read Threat Intelligence (Read Weekly)</h4>
+    <ul class="resource-list">
+      <li><span class="resource-icon">BLOG</span><div class="resource-content"><strong>Mandiant / Google Cloud Threat Intel Blog</strong><span>cloud.google.com/blog/topics/threat-intelligence — Primary source. Read every new report.</span></div></li>
+      <li><span class="resource-icon">BLOG</span><div class="resource-content"><strong>CrowdStrike Adversary Intelligence</strong><span>adversary.crowdstrike.com — Annual threat report. Actor profiles.</span></div></li>
+      <li><span class="resource-icon">BLOG</span><div class="resource-content"><strong>Microsoft MSTIC Blog</strong><span>microsoft.com/security/blog — MSTIC publishes excellent APT research. NOBELIUM, HAFNIUM, etc.</span></div></li>
+      <li><span class="resource-icon">DB</span><div class="resource-content"><strong>MITRE ATT&CK Navigator</strong><span>attack.mitre.org — Layer threat actor TTPs, compare, build your own heatmaps.</span></div></li>
+      <li><span class="resource-icon">TOOL</span><div class="resource-content"><strong>MISP (Malware Information Sharing Platform)</strong><span>Set up a local MISP instance. Learn how IOCs, threat actors, campaigns are structured.</span></div></li>
+      <li><span class="resource-icon">REPO</span><div class="resource-content"><strong>Malpedia</strong><span>malpedia.caad.fkie.fraunhofer.de — Malware families, actor profiles, YARA rules.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 9 ═══ -->
+<section class="section" id="reporting">
+  <div class="section-header">
+    <span class="section-num">// 09</span>
+    <h2>Report Writing — The Deliverable That Pays</h2>
+    <span class="section-tag">CLIENT-FACING</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Report Structure — Professional Pen Test / Red Team Report</h3>
+    <p>A Mandiant report is a premium deliverable. The quality of your writing directly reflects on Google's reputation with enterprise clients. A badly written report can lose a client. Learn to write exceptionally well.</p>
+
+    <div class="step-grid">
+      <div class="step-box"><div class="step-num">SECTION 1</div><div class="step-title">Executive Summary</div><div class="step-body">1-2 pages for the CEO/Board. Business language, no jargon. What was the overall risk level? What was the single most critical finding? What is the recommended priority action? Write this LAST.</div></div>
+      <div class="step-box"><div class="step-num">SECTION 2</div><div class="step-title">Scope &amp; Methodology</div><div class="step-body">What was tested, what was not tested, when, from which IP address, by whom. What methodology was followed (PTES, OWASP Testing Guide, CBEST framework, custom).</div></div>
+      <div class="step-box"><div class="step-num">SECTION 3</div><div class="step-title">Attack Narrative</div><div class="step-body">Story of the engagement: how you got in, what you found, what you did. Written like a thriller but technical. This is what clients actually read and discuss in debriefs.</div></div>
+      <div class="step-box"><div class="step-num">SECTION 4</div><div class="step-title">Technical Findings</div><div class="step-body">Each finding: severity (Critical/High/Medium/Low/Info), CVSSv3 score, affected system, description, evidence (screenshots with sensitive data masked), remediation steps, references.</div></div>
+      <div class="step-box"><div class="step-num">SECTION 5</div><div class="step-title">Remediation Roadmap</div><div class="step-body">Prioritized table of all findings. Immediate (patch now), short-term (30 days), medium-term (90 days). Assigns ownership. Some clients turn this directly into JIRA tickets.</div></div>
+      <div class="step-box"><div class="step-num">SECTION 6</div><div class="step-title">Appendices</div><div class="step-body">Full technical details, raw tool output, complete evidence. Security-sensitive — controls who receives this section. Raw Nmap output, screenshots, code snippets go here.</div></div>
+    </div>
+
+    <h4>Finding Write-Up Template — Memorize This Structure</h4>
+    <div class="code-block">
+<span class="c">## Finding: SQL Injection in Login Portal (CRITICAL)</span>
+
+<span class="k">CVSS Score:</span> 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+<span class="k">Affected Host:</span> https://app.target.com/login
+<span class="k">Discovered:</span> 2024-03-15
+
+<span class="k">Description:</span>
+The login form at /login is vulnerable to SQL injection via the
+'username' parameter. An unauthenticated attacker can extract the
+contents of the user database, including hashed passwords, and
+bypass authentication entirely using a crafted payload.
+
+<span class="k">Evidence:</span>
+Payload used: ' OR '1'='1' -- -
+Response: HTTP 200 OK, authenticated as admin user 'sysadmin'
+[Screenshot 1: Injected request in Burp Suite]
+[Screenshot 2: Response showing admin dashboard]
+
+<span class="k">Impact:</span>
+An unauthenticated attacker can gain administrative access to the
+application and exfiltrate the customer database (estimated 2.3M records).
+
+<span class="k">Remediation:</span>
+1. Implement parameterized queries / prepared statements immediately
+2. Deploy WAF rule blocking common SQLi payloads as temporary measure
+3. Review all database interaction code for similar patterns
+4. Implement application-layer input validation
+
+<span class="k">References:</span>
+- CWE-89: Improper Neutralization of Special Elements in SQL Queries
+- OWASP Top 10 2021: A03 Injection</div>
+
+    <h4>Report Writing Rules</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Write clear, jargon-free executive summaries — pretend you're explaining to your non-technical parent</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Every finding must have: description, evidence (screenshot), impact statement, specific remediation steps</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Blur/mask sensitive data in screenshots (passwords, SSNs, personal data) before including in report</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>CVSSv3 score every finding — know how to calculate base score manually</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Use consistent, professional language — no slang, no passive voice, no "we tried to do X" (say "we did X")</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Practice writing reports for every lab machine you compromise — treat it as a real client report</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 10 ═══ -->
+<section class="section" id="tooldev">
+  <div class="section-header">
+    <span class="section-num">// 10</span>
+    <h2>Programming &amp; Tool Development Deep Dive</h2>
+    <span class="section-tag">HANDS-ON</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Learning Path: From Zero to Security Toolsmith</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-label">MONTH 1</div><div class="tl-title">Python Fundamentals</div><div class="tl-desc">Automate the Boring Stuff with Python (free). Then Violent Python / Black Hat Python. Write a TCP port scanner from scratch.</div></div>
+      <div class="tl-item phase2"><div class="tl-label">MONTH 2</div><div class="tl-title">Python Security Tools</div><div class="tl-desc">Network scanner, simple reverse shell, keylogger, HTTP fuzzer. Learn socket programming deeply. Study Impacket source code.</div></div>
+      <div class="tl-item phase3"><div class="tl-label">MONTH 3</div><div class="tl-title">C# Windows Basics</div><div class="tl-desc">C# crash course. P/Invoke Windows APIs. Write a simple process listing tool. Then progress to memory reading and writing.</div></div>
+      <div class="tl-item phase4"><div class="tl-label">MONTH 4</div><div class="tl-title">C# Offensive Tools</div><div class="tl-desc">Shellcode loader, simple inject tool, LDAP enumerator. Study SharpHound, Rubeus, Seatbelt source code on GitHub.</div></div>
+      <div class="tl-item phase5"><div class="tl-label">MONTH 5-6</div><div class="tl-title">C2 &amp; Advanced Tooling</div><div class="tl-desc">Build a working HTTP C2 from scratch. Implement sleep/jitter, command execution, file transfer. Add AES encryption to comms.</div></div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Open-Source Offensive Tools to Study (Read the Code)</h3>
+    <div class="card-grid">
+      <div class="card green"><div class="card-title">Impacket</div><div class="card-body">github.com/fortra/impacket — Python Windows protocol implementation. Reading this teaches you SMB, Kerberos, NTLM at the packet level.</div></div>
+      <div class="card blue"><div class="card-title">Rubeus</div><div class="card-body">github.com/GhostPack/Rubeus — C# Kerberos attack toolkit. Kerberoasting, AS-REP roasting, ticket operations. Study the Kerberos implementation.</div></div>
+      <div class="card amber"><div class="card-title">Seatbelt</div><div class="card-body">github.com/GhostPack/Seatbelt — C# host enumeration. Hundreds of checks for post-exploitation. Learn what attackers look for on a compromised machine.</div></div>
+      <div class="card purple"><div class="card-title">SharpHound</div><div class="card-body">github.com/BloodHoundAD/SharpHound — C# AD data collector. Teaches you every piece of AD data that's useful to an attacker.</div></div>
+      <div class="card red"><div class="card-title">Sliver</div><div class="card-body">github.com/BishopFox/sliver — Open-source C2 in Go. Read the architecture to understand C2 design patterns, transport protocols, implant structure.</div></div>
+      <div class="card teal"><div class="card-title">PowerSploit / PowerSharpPack</div><div class="card-body">Classic PowerShell offensive toolkit. Invoke-Mimikatz, PowerUp, Get-GPPPassword. Learn how these in-memory techniques work.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 11 ═══ -->
+<section class="section" id="google-process">
+  <div class="section-header">
+    <span class="section-num">// 11</span>
+    <h2>Google Interview Process — What to Expect</h2>
+    <span class="section-tag">INTERVIEW PREP</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Google's Hiring Process for Security Engineering Roles</h3>
+    <div class="alert info"><strong>Typical process (5–8 weeks total):</strong> Recruiter screen → Technical phone screen (1) → Onsite/Virtual onsite (4–5 rounds) → Hiring committee review → Offer.</div>
+
+    <div class="step-grid">
+      <div class="step-box"><div class="step-num">STAGE 1</div><div class="step-title">Recruiter Screen (30 min)</div><div class="step-body">Resume walk-through. Basic experience verification. Salary expectations. Timeline. Location discussion. BE PREPARED: clear 60-second summary of your background and why Mandiant specifically.</div></div>
+      <div class="step-box"><div class="step-num">STAGE 2</div><div class="step-title">Technical Phone Screen (45-60 min)</div><div class="step-body">1 Google engineer. Mix of technical questions and a short coding/scenario challenge. May involve: explain an attack technique, walk through a pentest methodology, describe a tool you built.</div></div>
+      <div class="step-box"><div class="step-num">STAGE 3</div><div class="step-title">Virtual Onsite (4–5 x 45 min)</div><div class="step-body">Each round focuses on different areas: technical depth (1-2 rounds), system design for security (1 round), behavioral/Googleyness (1-2 rounds). All back-to-back in one day.</div></div>
+      <div class="step-box"><div class="step-num">STAGE 4</div><div class="step-title">Hiring Committee</div><div class="step-body">A committee of senior engineers reviews all feedback. They may request clarification or additional rounds. This takes 1-4 weeks. Stay available and responsive.</div></div>
+    </div>
+
+    <h4>What Google's Hiring Committee Evaluates</h4>
+    <table class="data-table">
+      <thead><tr><th>Signal</th><th>What They Look For</th><th>How to Demonstrate</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Technical Ability</strong></td><td>Deep, accurate knowledge — not surface familiarity. Can you explain the TCP handshake AND its security implications? Not "I know Metasploit" but "Here's how meterpreter establishes its communication channel."</td><td>Depth of technical answers, correct use of terminology, willingness to say "I don't know" rather than guess</td></tr>
+        <tr><td><strong>Googleyness</strong></td><td>Comfort with ambiguity, intellectual curiosity, collaborative spirit, caring about impact beyond just technical work, ethical conduct.</td><td>Behavioral stories showing adaptability, learning from failure, going beyond the task</td></tr>
+        <tr><td><strong>Leadership</strong></td><td>Can you influence without authority? Drive projects? Mentor others? Make decisions under pressure?</td><td>STAR stories about leading technical initiatives, driving adoption of security improvements</td></tr>
+        <tr><td><strong>Problem Solving</strong></td><td>How do you approach an unknown problem? Structure matters as much as the answer. Can you break down complex security problems systematically?</td><td>Think aloud during technical questions, show structured methodology, explain your reasoning</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 12 ═══ -->
+<section class="section" id="technical-q">
+  <div class="section-header">
+    <span class="section-num">// 12</span>
+    <h2>Technical Interview Questions — Full Bank</h2>
+    <span class="section-tag">INTERVIEW PREP</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Networking &amp; Protocol Questions</h3>
+    <ul class="resource-list">
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>Explain what happens when you browse to https://google.com</strong><span>Answer should cover: DNS resolution, TCP 3-way handshake, TLS 1.3 handshake (ClientHello, ServerHello, cert, key exchange), HTTP/2 GET request, response, rendering. Each step has security implications you should mention.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>What is a "pass-the-hash" attack? How would you detect it?</strong><span>Answer: Windows NTLM authentication transmits a hash of the password. An attacker who captures the hash can use it directly without knowing the plaintext. Detection: anomalous authentication from new hosts, Event ID 4648, 4624 Type 3 from unusual sources, Sysmon Event 10 (process access to LSASS).</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>How does Kerberos work? What is Kerberoasting?</strong><span>Answer: AS-REQ→AS-REP (TGT), TGS-REQ→TGS-REP (service ticket). Kerberoasting: request service ticket for SPN account, extract ticket encrypted with service account's password hash, crack offline. Detection: Event 4769 with RC4 encryption type from unusual user.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>What is DNS tunneling and how do you detect it?</strong><span>Answer: encoding data in DNS queries/responses (subdomain = data, TXT/NULL record = data). Detection: high volume of DNS queries per second, long DNS query names (>50 chars), queries to single domain, high entropy domain names, unusual record types (NULL, TXT at high frequency).</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>Explain SMB relay attacks. When do they work?</strong><span>Answer: NTLM authentication can be relayed. When SMB signing is disabled (default on workstations), capture NTLMv2 challenge with Responder, relay to target with ntlmrelayx. Works when: SMB signing disabled, target != source host, requester has local admin on target.</span></div></li>
+    </ul>
+
+    <h3>Web Application Questions</h3>
+    <ul class="resource-list">
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>Walk me through exploiting a blind SQL injection vulnerability</strong><span>Answer: Boolean-based: ' AND 1=1-- (true) vs ' AND 1=2-- (false) → different responses. Time-based: ' AND SLEEP(5)-- → response delays. Out-of-band: trigger DNS/HTTP request to your server. Automate with sqlmap --technique=B or manual. Exfil with SUBSTRING/ASCII.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>How do you test for SSRF? What's the impact?</strong><span>Answer: Look for URL parameters, webhook URLs, import from URL features, image preview fetching. Test with: internal IPs (192.168.x.x), localhost, cloud metadata (169.254.169.254/latest/meta-data/iam/security-credentials). Impact: read cloud credentials → full cloud compromise, internal service access, port scanning internal network.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>What is the difference between XSS and CSRF?</strong><span>Answer: XSS = attacker injects script that runs in victim's browser context (same origin). CSRF = attacker tricks victim's browser into making authenticated requests to target site. XSS can be used to bypass CSRF protections. CSRF mitigated by CSRF tokens, SameSite cookies. XSS requires input validation and output encoding.</span></div></li>
+    </ul>
+
+    <h3>Red Team Scenario Questions</h3>
+    <ul class="resource-list">
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>"You've got initial access via phishing on a standard user workstation. Walk me through your next steps."</strong><span>Answer structure: (1) Situational awareness — whoami, hostname, ipconfig/arp, domain?, AV running? (2) Privilege escalation — check for SUID/sudo misconfig on Linux, SeImpersonate on Windows, common PE paths (3) Persistence — blend in, schedule task, registry runkey (4) Credential harvesting — LSASS, saved credentials, password manager (5) Lateral movement — identify targets via BloodHound/net commands (6) Domain compromise — Kerberoast, PtH, PtT to reach DC.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>"Your beacon gets killed by the EDR within 10 minutes of execution. What do you do?"</strong><span>Answer: (1) Analyze why — memory signature? Behavior (LSASS access, process injection)? Network signature? (2) Adapt — switch to different execution method (LOLBin), modify malleable C2 profile, implement sleep/jitter, try process injection into trusted process (3) Reinfect — via different initial access vector or persistence already established (4) Change tooling — use different implant or BOF instead of full beacon.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>"How do you emulate APT29 in a red team engagement?"</strong><span>Answer: (1) Read Mandiant APT29 report + ATT&CK page (2) Map TTPs to your attack plan: T1566.001 spear phishing, T1078 valid accounts, SUNBURST-like supply chain simulation, T1550.001 Application Access Token abuse, T1027 obfuscation (3) Use similar infrastructure OPSEC — cloud providers, legitimate domains (4) Custom malware mimicking their code patterns (5) Document every technique used and map to ATT&CK for the report.</span></div></li>
+    </ul>
+
+    <h3>Tool Development Questions</h3>
+    <ul class="resource-list">
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>"Walk me through a security tool you built from scratch."</strong><span>This is your anchor question. Have ONE tool you know inside and out. Describe: what problem it solved, what language/libraries, key design decisions (why async vs threaded?), how you tested it, how you evaded detection with it, what you would improve.</span></div></li>
+      <li><span class="resource-icon">Q</span><div class="resource-content"><strong>"How would you write a shellcode loader in C# that evades AV?"</strong><span>Answer: Read shellcode (AES-encrypted on disk or remote), decrypt in memory, VirtualAlloc with RWX, copy shellcode, create thread (or use process injection). Evasion: delay execution (sleep), check for sandbox artifacts, indirect syscalls via SysWhispers to avoid userland hooks, sign the binary.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 13 ═══ -->
+<section class="section" id="behavioral">
+  <div class="section-header">
+    <span class="section-num">// 13</span>
+    <h2>Behavioral Interviews — STAR Method Mastery</h2>
+    <span class="section-tag">INTERVIEW PREP</span>
+  </div>
+
+  <div class="subsection">
+    <h3>The STAR Framework</h3>
+    <div class="card-grid">
+      <div class="card green"><div class="card-title">S — Situation</div><div class="card-body">Set the context. Be specific — real company (can anonymize), real project. What was at stake? Keep this to 2-3 sentences. The interviewer doesn't need the backstory of the company.</div></div>
+      <div class="card blue"><div class="card-title">T — Task</div><div class="card-body">What was YOUR specific responsibility? Distinguish between what the team did and what YOU did. "I was responsible for..." not "we were responsible for..."</div></div>
+      <div class="card amber"><div class="card-title">A — Action</div><div class="card-body">Specific steps YOU took. This is where 70% of your answer should be. Technical decisions, why you chose approach A over approach B, how you dealt with obstacles.</div></div>
+      <div class="card purple"><div class="card-title">R — Result</div><div class="card-body">What happened? Quantify if possible: "reduced attack surface by X%", "identified 12 critical vulnerabilities", "client implemented all recommendations within 30 days". What did you learn?</div></div>
+    </div>
+
+    <h4>Essential STAR Stories — Prepare All of These</h4>
+    <table class="data-table">
+      <thead><tr><th>Question Theme</th><th>Example Question</th><th>Story to Prepare</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Technical Excellence</strong></td><td>"Tell me about a technically challenging security problem you solved."</td><td>A complex exploit you developed, an evasion technique you created, a tool that solved a hard problem. Show depth of technical reasoning.</td></tr>
+        <tr><td><strong>Failure &amp; Learning</strong></td><td>"Tell me about a time you made a mistake that impacted your work."</td><td>Be genuine. Show you take ownership, what you learned, what you changed. Google values intellectual honesty. Do NOT say "I can't think of a failure."</td></tr>
+        <tr><td><strong>Ambiguity</strong></td><td>"Tell me about a time you had to make a decision with incomplete information."</td><td>Engagement where scope changed, client network was different from briefed, novel attack path — how did you reason through it?</td></tr>
+        <tr><td><strong>Collaboration</strong></td><td>"Tell me about a time you had a conflict with a team member."</td><td>Disagreement on approach, methodology, or priority. Show respectful resolution, willingness to listen, focus on outcomes.</td></tr>
+        <tr><td><strong>Impact</strong></td><td>"What's the most impactful security work you've done?"</td><td>Critical vulnerability found, major breach prevented, security posture improvement that had measurable business impact.</td></tr>
+        <tr><td><strong>Client Interaction</strong></td><td>"Tell me about a difficult client conversation."</td><td>Client disagreed with severity rating, wanted findings buried, was defensive about your findings. How did you handle with professionalism?</td></tr>
+        <tr><td><strong>Leadership</strong></td><td>"Tell me about a time you influenced someone to improve security without formal authority."</td><td>Convinced a developer to fix a critical flaw, convinced management to invest in security tooling, mentored a junior team member.</td></tr>
+        <tr><td><strong>Googleyness</strong></td><td>"Why Google? Why Mandiant specifically?"</td><td>Not "prestige" — specific: Mandiant's threat intel capability, the scale of Google's infrastructure you'd be protecting, the specific research area you want to contribute to.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert warn"><strong>Common mistake:</strong> Using "we" throughout your story. The interviewer is evaluating YOU. Every action should be "I". If it was a team effort, say "I coordinated the team to..." or "I was responsible for the X component where I..."</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 14 ═══ -->
+<section class="section" id="communication">
+  <div class="section-header">
+    <span class="section-num">// 14</span>
+    <h2>Communication Skills — The Overlooked Differentiator</h2>
+    <span class="section-tag">CRITICAL</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Speaking to Technical vs. Non-Technical Audiences</h3>
+    <p>Mandiant consultants present to Fortune 500 CEOs. You must be able to switch registers — deep technical to executive-level — mid-conversation if needed.</p>
+
+    <h4>The "Three Levels" Method</h4>
+    <div class="step-grid">
+      <div class="step-box"><div class="step-num">LEVEL 1</div><div class="step-title">Executive (C-Level)</div><div class="step-body">Business risk language. "An attacker could access your customer database, impacting 2M customers and costing $X in regulatory fines." No CVE numbers, no technical acronyms. Focus on: what can they steal? what operations can they disrupt? what is the cost?</div></div>
+      <div class="step-box"><div class="step-num">LEVEL 2</div><div class="step-title">Manager (CISO / VP)</div><div class="step-body">Strategic language. "Your detection and response capabilities are insufficient — average dwell time in our test was 14 days before we triggered an alert." Focus on: gaps in security program, team capability, process improvements, budget priorities.</div></div>
+      <div class="step-box"><div class="step-num">LEVEL 3</div><div class="step-title">Technical (Sysadmin / Dev)</div><div class="step-body">Full technical detail. "SMB signing is disabled on 47 workstations — here's the registry key to enable it, here's the group policy template, here's why NTLM relay works without it." They want specifics they can act on.</div></div>
+    </div>
+
+    <h4>Active Listening in Technical Interviews</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Repeat back the question in your own words before answering — confirms understanding and buys thinking time</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Ask clarifying questions before assuming — "When you say 'web application', do you mean a black-box or white-box assessment?"</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Say "I don't know, but here's how I'd figure it out" — never guess or make up answers</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Structure long answers: "There are three main points here: first... second... third..." — prevents rambling</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Slow down when speaking technical content — interviewers need time to follow complex technical reasoning</span></li>
+    </ul>
+
+    <h4>Public Speaking &amp; Presentation Skills</h4>
+    <p>Mandiant consultants present at security conferences (RSA, DEF CON, Black Hat). This is part of the job. Practice:</p>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Present a technical topic to someone non-technical — record yourself and review</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Create a "debrief" presentation for a simulated pen test and present it to a friend as if they're the CEO</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Submit a CFP (Call for Papers) to a local security conference — the discipline of preparing a talk is invaluable</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Join Toastmasters or similar if public speaking is a weakness — this is a legitimate career limiter at Mandiant</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 15 ═══ -->
+<section class="section" id="lab">
+  <div class="section-header">
+    <span class="section-num">// 15</span>
+    <h2>Home Lab Setup</h2>
+    <span class="section-tag">INFRASTRUCTURE</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Minimum Viable Lab (Budget: ~$0–$200)</h3>
+    <div class="alert success"><strong>Good news:</strong> A powerful lab can be built on a single modern laptop using VirtualBox or VMware Workstation Player (free) + cloud-based practice platforms.</div>
+
+    <h4>Hypervisor Options</h4>
+    <div class="card-grid">
+      <div class="card green"><div class="card-title">VMware Workstation Pro</div><div class="card-body">Best performance. Now free for personal use (as of 2024). Supports nested virtualization. Primary recommendation if your laptop has 16GB+ RAM.</div></div>
+      <div class="card blue"><div class="card-title">VirtualBox</div><div class="card-body">Free, open-source. Slightly worse performance but good enough. Cross-platform. Use Extension Pack for USB 3.0 and RDP support.</div></div>
+      <div class="card amber"><div class="card-title">Proxmox VE</div><div class="card-body">If you have a spare PC: install Proxmox as a bare-metal hypervisor. Professional-grade, supports clusters, advanced networking (VLANs, SDN).</div></div>
+    </div>
+
+    <h4>Required VMs</h4>
+    <table class="data-table">
+      <thead><tr><th>VM</th><th>Purpose</th><th>Download From</th><th>RAM Alloc</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Kali Linux</strong></td><td>Attack machine. All tools pre-installed. Use as your primary attack platform.</td><td>kali.org/get-kali</td><td>4GB min, 8GB preferred</td></tr>
+        <tr><td><strong>Windows Server 2019/2022</strong></td><td>Domain Controller for your AD lab. Install AD DS, DNS. Essential for AD attack practice.</td><td>Microsoft Evaluation Center (180-day free)</td><td>4GB</td></tr>
+        <tr><td><strong>Windows 10/11</strong></td><td>Domain-joined workstation target. Install common software (Office, Chrome) for realistic testing.</td><td>Microsoft Evaluation Center</td><td>4GB</td></tr>
+        <tr><td><strong>Metasploitable 2/3</strong></td><td>Intentionally vulnerable Linux machine for basic practice.</td><td>sourceforge.net/projects/metasploitable</td><td>1GB</td></tr>
+        <tr><td><strong>DVWA / VulnHub boxes</strong></td><td>Web app practice and specific CVE practice boxes.</td><td>dvwa.co.uk / vulnhub.com</td><td>1-2GB each</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Cloud-Based Practice (No VM Needed)</h4>
+    <ul class="resource-list">
+      <li><span class="resource-icon">PAID</span><div class="resource-content"><strong>HackTheBox (HTB)</strong><span>app.hackthebox.com — Best overall platform. Real machines, updated regularly. VIP ($14/month) for retired machine writeups. MUST DO for OSCP prep.</span></div></li>
+      <li><span class="resource-icon">FREE</span><div class="resource-content"><strong>TryHackMe</strong><span>tryhackme.com — More guided, beginner-friendly. Excellent for learning specific topics (AD rooms, web app rooms). Free tier has most content.</span></div></li>
+      <li><span class="resource-icon">PAID</span><div class="resource-content"><strong>PortSwigger Web Security Academy</strong><span>portswigger.net/web-security — Best web app security labs in existence. FREE. Complete the 100% learning path. Every OWASP vuln + advanced topics.</span></div></li>
+      <li><span class="resource-icon">PAID</span><div class="resource-content"><strong>PentesterLab</strong><span>pentesterlab.com — Code review and advanced web app vulnerabilities. Pro subscription ($20/month) worth it.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 16 ═══ -->
+<section class="section" id="ctf">
+  <div class="section-header">
+    <span class="section-num">// 16</span>
+    <h2>CTF &amp; Competition Practice</h2>
+    <span class="section-tag">CONTINUOUS</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Why CTFs Matter for This Role</h3>
+    <p>CTF challenges demonstrate that you can think offensively under pressure, solve novel problems, and write clean working exploits. Mandiant interviewers often ask "any interesting CTF challenges recently?" Have good stories ready.</p>
+
+    <div class="card-grid">
+      <div class="card green"><div class="card-title">CTFtime.org</div><div class="card-body">Upcoming CTF events calendar. Participate in at least 2-3 CTFs per month. Focus on web, pwn (binary exploitation), forensics, and crypto categories.</div></div>
+      <div class="card blue"><div class="card-title">PicoCTF</div><div class="card-body">Carnegie Mellon's excellent beginner-to-intermediate CTF platform. Covers all categories. Good starting point before competitive CTFs.</div></div>
+      <div class="card amber"><div class="card-title">pwn.college</div><div class="card-body">Arizona State's exceptional binary exploitation course. Covers all levels of pwn — ret2win, ROP chains, heap exploitation. Free and extremely rigorous.</div></div>
+      <div class="card purple"><div class="card-title">Crypto Challenges (Cryptopals)</div><div class="card-body">cryptopals.com — The best cryptography challenge set. Teaches you by breaking real-world crypto constructs. Do all 8 sets.</div></div>
+    </div>
+
+    <h4>CTF Categories Relevant to This Role</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Web: SQLi, XSS, SSTI, deserialization, JWT attacks — solve 20+ web challenges</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Pwn: Buffer overflows (stack and heap), ROP chains, format string — complete pwn.college modules</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Reverse engineering: crackmes, binary analysis with Ghidra/IDA — solve 10+ RE challenges</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Forensics: memory forensics (Volatility), disk forensics (Autopsy), network packet analysis</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Crypto: implement attacks from Cryptopals, break real-world implementations</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 17 ═══ -->
+<section class="section" id="resources">
+  <div class="section-header">
+    <span class="section-num">// 17</span>
+    <h2>Books, Courses &amp; References</h2>
+    <span class="section-tag">STUDY MATERIALS</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Essential Books (Priority Order)</h3>
+    <table class="data-table">
+      <thead><tr><th>Book</th><th>Author</th><th>Topics</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td><strong>The Hacker Playbook 3</strong></td><td>Peter Kim</td><td>Red team methodology, C2, evasion, AD attacks. Written by a practitioner. Very practical.</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>Penetration Testing</strong></td><td>Georgia Weidman</td><td>Comprehensive pen test guide, good for OSCP prep, covers all domains.</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>The Web Application Hacker's Handbook</strong></td><td>Stuttard &amp; Pinto</td><td>Classic web app security reference. Detailed attack descriptions.</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>Red Team Development and Operations</strong></td><td>Joe Vest &amp; James Tubberville</td><td>Operational red team planning, C2 infrastructure, rules of engagement. Very Mandiant-relevant.</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>The Art of Exploitation</strong></td><td>Jon Erickson</td><td>Low-level exploit development. Buffer overflows, shellcode, format strings. Includes a live CD for practice.</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>Malware Analyst's Cookbook</strong></td><td>Ligh, Case, Levy, Walters</td><td>Static + dynamic malware analysis. Memory forensics. IDA Pro usage.</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>Black Hat Python (2nd Ed.)</strong></td><td>Justin Seitz</td><td>Python offensive tooling. Network tools, trojans, forensics, web attacks. Great for the tool dev requirement.</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><strong>Violent Python</strong></td><td>T.J. O'Connor</td><td>Python security scripts. Slightly older but excellent for fundamentals.</td><td>⭐⭐⭐</td></tr>
+        <tr><td><strong>The Shellcoder's Handbook</strong></td><td>Koziol et al.</td><td>Finding and exploiting security holes. Buffer overflows, format strings, heap exploitation.</td><td>⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Online Courses (Priority Order)</h3>
+    <ul class="resource-list">
+      <li><span class="resource-icon">COURSE</span><div class="resource-content"><strong>PEN-200 (PWK) — OffSec</strong><span>offensive-security.com — The OSCP course. Required if pursuing the cert. Most comprehensive single course for this role.</span></div></li>
+      <li><span class="resource-icon">COURSE</span><div class="resource-content"><strong>TCM Security Practical Ethical Hacking</strong><span>tcm-sec.com — Affordable ($30), excellent AD attack content, great for beginners transitioning to offensive security.</span></div></li>
+      <li><span class="resource-icon">COURSE</span><div class="resource-content"><strong>Zero-Point Security CRTO Course</strong><span>zeropointsecurity.co.uk — Best C2/Red Team operations course. Cobalt Strike focused. Directly aligned with Mandiant work.</span></div></li>
+      <li><span class="resource-icon">COURSE</span><div class="resource-content"><strong>PortSwigger Web Security Academy</strong><span>portswigger.net/web-security — FREE and best web app security training available anywhere.</span></div></li>
+      <li><span class="resource-icon">COURSE</span><div class="resource-content"><strong>Maldev Academy</strong><span>maldevacademy.com — Malware development, evasion techniques, Windows internals for offensive security. Directly relevant to tool creation requirement.</span></div></li>
+    </ul>
+
+    <h3>YouTube Channels (Free)</h3>
+    <div class="tags">
+      <span class="tag green">John Hammond</span>
+      <span class="tag blue">IppSec (HTB Walkthroughs)</span>
+      <span class="tag amber">TCM Security</span>
+      <span class="tag purple">LiveOverflow (Binary Exploitation)</span>
+      <span class="tag red">STÖK (Bug Bounty)</span>
+      <span class="tag teal">The Cyber Mentor</span>
+      <span class="tag green">Seytonic</span>
+      <span class="tag blue">HuskyHacks</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 18 ═══ -->
+<section class="section" id="daily">
+  <div class="section-header">
+    <span class="section-num">// 08</span>
+    <h2>Daily &amp; Weekly Routine</h2>
+    <span class="section-tag">DISCIPLINE</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Weekly Study Schedule Template</h3>
+    <table class="data-table">
+      <thead><tr><th>Day</th><th>Morning (2h)</th><th>Evening (2h)</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Monday</strong></td><td>Technical theory study (current phase topic)</td><td>Lab practice (implement what you studied)</td><td>Start week with new knowledge</td></tr>
+        <tr><td><strong>Tuesday</strong></td><td>CTF challenge (1-2 challenges)</td><td>Write notes/documentation for CTF solution</td><td>Application + writing practice</td></tr>
+        <tr><td><strong>Wednesday</strong></td><td>Tool development (current build project)</td><td>Read 1 threat intelligence report</td><td>Creation + industry awareness</td></tr>
+        <tr><td><strong>Thursday</strong></td><td>HackTheBox machine (active)</td><td>Review MITRE ATT&CK techniques (3 per session)</td><td>Practical + framework fluency</td></tr>
+        <tr><td><strong>Friday</strong></td><td>Report writing practice (write up this week's lab work as a real report)</td><td>Behavioral question prep (2 STAR stories)</td><td>Communication + interview prep</td></tr>
+        <tr><td><strong>Saturday</strong></td><td>Long session: complex topic (AD lab, full exploit development, etc.)</td><td>Watch 1 conference talk (DEF CON/Black Hat YouTube)</td><td>Deep work + community learning</td></tr>
+        <tr><td><strong>Sunday</strong></td><td>Review week's notes, update your "cheat sheet" document</td><td>Plan next week, check CTF calendar, read security news</td><td>Consolidation + planning</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Daily Non-Negotiables</h4>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Read 1 security news article / blog post (minimum 15 minutes) — r/netsec, Twitter/X security community, Krebs on Security</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Review 5 flashcards (create Anki deck for port numbers, CVEs, ATT&CK techniques, Windows event IDs)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Write at least 100 words in your notes document about what you learned or practiced that day</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 19 ═══ -->
+<section class="section" id="mistakes">
+  <div class="section-header">
+    <span class="section-num">// 19</span>
+    <h2>Common Mistakes — Avoid These</h2>
+    <span class="section-tag">RISK MITIGATION</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Technical Mistakes in the Interview</h3>
+    <div class="alert danger"><strong>These mistakes will fail you immediately:</strong> Making up answers you don't know. Saying "I've used Metasploit" without knowing how it works internally. Claiming certifications you haven't earned. Overstating your tool development experience.</div>
+
+    <table class="data-table">
+      <thead><tr><th>Mistake</th><th>Why It's Fatal</th><th>What to Do Instead</th></tr></thead>
+      <tbody>
+        <tr><td>Answering with tool names only</td><td>"I used Nmap" is not an answer. Everyone uses Nmap. Mandiant wants to know you understand what Nmap is doing.</td><td>Explain the underlying protocol/mechanism: "Nmap SYN scan sends a SYN packet and analyzes the response — if SYN-ACK comes back, port is open. It never completes the handshake so it's stealthier and faster than connect scan."</td></tr>
+        <tr><td>Not knowing your own resume</td><td>If you list OSCP, expect deep follow-up questions. If you list "Active Directory experience," expect detailed questions.</td><td>For everything on your resume, prepare a 5-minute deep-dive answer. Reread your resume before every interview.</td></tr>
+        <tr><td>Ignoring the detection/blue team side</td><td>Red team at Mandiant is complementary to blue team. Not knowing detection methods shows incomplete understanding.</td><td>For every attack you discuss, also explain how it's detected: which Event IDs, what network signatures, what EDR behavior alerts.</td></tr>
+        <tr><td>Skipping ethical and legal context</td><td>Mandiant engineers interact with C-level clients. Ethics and legal authority are not optional — they're professional requirements.</td><td>For any technical answer, acknowledge authorization, rules of engagement, legal considerations where relevant.</td></tr>
+        <tr><td>Rushing answers without structure</td><td>A technically brilliant but disorganized answer signals poor communication skills — a key job requirement here.</td><td>Pause, structure your answer ("There are three things to consider here..."), deliver clearly, then ask "does that fully answer your question?"</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Preparation Mistakes</h3>
+    <div class="card-grid">
+      <div class="card red"><div class="card-title">Over-relying on tutorials</div><div class="card-body">Watching someone hack is not learning. You must DO it. For every video watched, spend 3x as long practicing the technique yourself in your lab.</div></div>
+      <div class="card amber"><div class="card-title">Skipping the fundamentals</div><div class="card-body">Jumping to "advanced" topics without solid networking/OS foundations. You'll hit a wall — every advanced technique requires foundation knowledge to understand and explain.</div></div>
+      <div class="card purple"><div class="card-title">Never writing reports</div><div class="card-body">The report is half the deliverable at Mandiant. Practice writing formal penetration test reports for every machine you compromise, not just the fun hacking part.</div></div>
+      <div class="card blue"><div class="card-title">No original tool portfolio</div><div class="card-body">The job requires 3 years of security tool creation. Using existing tools (Metasploit, Mimikatz) is not "tool creation." Build original projects, put them on GitHub with documentation.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 20 ═══ -->
+<section class="section" id="worstcase">
+  <div class="section-header">
+    <span class="section-num">// 20</span>
+    <h2>Worst-Case Scenarios &amp; How to Handle Them</h2>
+    <span class="section-tag">CONTINGENCY</span>
+  </div>
+
+  <div class="subsection">
+    <h3>During the Interview</h3>
+    <table class="data-table">
+      <thead><tr><th>Scenario</th><th>Response Strategy</th></tr></thead>
+      <tbody>
+        <tr><td><strong>You are asked a question you have no idea about</strong></td><td>Say: "I haven't worked with that specific technique yet, but based on what I know about [related area], I'd reason through it like this..." Then reason aloud. Intellectual honesty + structured thinking is valued over bluffing. End with: "Is that close? I'd love to understand the actual mechanism."</td></tr>
+        <tr><td><strong>You freeze mid-answer on a technical question</strong></td><td>Pause and say: "Let me think through this systematically." Take 10 seconds. Structure: start from first principles. Start with what you KNOW about the topic, build from there. The interviewer has time — they'd rather see reasoning than speed.</td></tr>
+        <tr><td><strong>The interviewer challenges your answer aggressively</strong></td><td>Do NOT back down immediately if you're confident. Say: "I understand the concern — my reasoning was [X]. Is there something specific about that approach you'd push back on?" Google interviewers sometimes challenge correct answers to test if you hold your ground. If they show you're wrong, acknowledge and update.</td></tr>
+        <tr><td><strong>You can't think of a good STAR example</strong></td><td>Be honest about the scale. A small project where you showed the right behavior is better than a vague big story. Or say: "I haven't had exactly that situation, but here's a closely related one where I demonstrated the same principle..."</td></tr>
+        <tr><td><strong>Technical audio/connection issues in virtual interview</strong></td><td>Test everything 24 hours before: camera, microphone, internet speed. Have backup phone hotspot ready. If issues occur during interview, immediately email/call the recruiter — don't just sit in silence. Google recruiters are experienced with this.</td></tr>
+        <tr><td><strong>You receive a rejection</strong></td><td>Email the recruiter within 24 hours. Ask specifically: "Are there areas of feedback that could help me improve for future applications?" Google has a 1-year reapplication policy — use the time to fill exactly the gaps they identified. Many successful Googlers applied 2-3 times.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>During Preparation</h3>
+    <div class="card-grid">
+      <div class="card amber"><div class="card-title">Falling behind schedule</div><div class="card-body">Don't try to catch up — reassess. Compress the non-critical sections. Prioritize: networking + AD attacks + tool portfolio + behavioral prep are the non-negotiables. Everything else adjusts.</div></div>
+      <div class="card red"><div class="card-title">Impostor syndrome</div><div class="card-body">Normal and universal. The solution: small daily wins. Set concrete achievable goals (compromise this one machine today, finish this one script today). Progress compounds.</div></div>
+      <div class="card blue"><div class="card-title">Lab environment breaking</div><div class="card-body">Document your lab setup in a runbook so you can rebuild in 2 hours. Use snapshots in VMware. Store configs in Git. Treat lab maintenance as part of the job training.</div></div>
+      <div class="card purple"><div class="card-title">Information overload</div><div class="card-body">Stick to the plan phases. There's infinite security content to consume — you don't need all of it. Focus: complete your current phase before moving to the next. Depth beats breadth here.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTION 21 ═══ -->
+<section class="section" id="checklist">
+  <div class="section-header">
+    <span class="section-num">// 21</span>
+    <h2>Final Application Readiness Checklist</h2>
+    <span class="section-tag">GO / NO-GO</span>
+  </div>
+
+  <div class="subsection">
+    <h3>Technical Readiness — Do Not Apply Until All Are Green</h3>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can explain TCP/IP stack, OSI model, Kerberos, NTLM, DNS, SMB, TLS at protocol level — not just conceptually</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Completed OSCP (or actively enrolled + 70+ machines solved) OR equivalent certification (CRTO + CRTE + PG Practice machines)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Has 3+ original security tools on GitHub with documentation: at minimum 1 Python, 1 C# or C tool</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can walk through a complete AD attack chain from scratch (phishing → foothold → lateral movement → DC compromise) in 60 minutes in the lab</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can demonstrate proficiency in all major test types: web app, network, mobile (Android), wireless — have done real engagements or detailed lab simulations</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Knows MITRE ATT&CK well enough to map any attack technique to its tactic and list 3 detection methods without looking it up</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Has read and can discuss 5 real threat intelligence reports (Mandiant APT reports, Microsoft MSTIC) in detail</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can write a professional-quality pen test report: executive summary, technical findings with CVSS scoring, remediation roadmap</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Top 25% ranking on HackTheBox OR solved 50+ machines including Active Directory paths</span></li>
+    </ul>
+
+    <h3>Soft Skills Readiness</h3>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Has prepared and rehearsed 8+ STAR stories covering all major behavioral categories</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can explain any technical topic at three levels: executive, manager, technical — practiced this with real people</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Has a clear, compelling, 90-second answer to "Tell me about yourself" tailored to Mandiant's work</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Can answer "Why Google? Why Mandiant specifically?" with specific, genuine reasons (not generic prestige answer)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Has conducted at least 3 mock technical interviews with another person (not just self-practice)</span></li>
+    </ul>
+
+    <h3>Application &amp; Resume</h3>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Resume is maximum 2 pages, Google-formatted, uses strong action verbs, quantifies impact where possible</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>GitHub profile is active, tools are documented with README, showing consistent commit history</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>LinkedIn profile is current, shows relevant experience, has activity (posts about security research/findings)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Has professional references ready (manager, client, or colleague who can speak to both technical and communication skills)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Researched interviewer backgrounds on LinkedIn (when recruiter provides names) — find common ground or their expertise areas</span></li>
+    </ul>
+
+    <h3>Day-Of Interview Checklist</h3>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><span class="cb"></span><span>Tested camera, microphone, internet connection (speed test) at least 24 hours before</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Closed all unnecessary applications (Slack, notifications, browser tabs except reference material)</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Have a notepad and pen for drawing diagrams or noting key parts of questions</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Have water nearby — long technical interviews cause dry mouth</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Have 3-5 questions ready to ask interviewers: about team culture, current challenges, tool stack, growth areas</span></li>
+      <li onclick="toggle(this)"><span class="cb"></span><span>Know the interviewer's timezone — Google interviews often span multiple timezones</span></li>
+    </ul>
+  </div>
+
+  <div class="alert success">
+    <strong>Final Mindset:</strong> The goal is not to impress Google — it is to show Google who you genuinely are. Be authentic, be specific, say "I don't know" when you don't know, show your reasoning process, and demonstrate genuine passion for offensive security. Preparation gives you the knowledge; authenticity wins the role.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top: 1px solid var(--border); padding: 32px 0; margin-top: 40px; font-family: var(--font-mono); font-size: 12px; color: var(--text3); text-align: center;">
+  <div style="margin-bottom: 8px;">google_mandiant_red_team_prep_plan · omniintelligence_v1.0 · generated 2026-05-21</div>
+  <div>This document is for personal preparation only. All tool development and testing must be performed on systems you are authorized to test.</div>
+</div>
+
+</main>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('.checklist li');
+  const done = document.querySelectorAll('.checklist li.done');
+  const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// Scroll spy
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('nav a');
+
+function onScroll() {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.getBoundingClientRect().top;
+    if (top <= 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>
